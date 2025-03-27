@@ -1,1 +1,18 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+button {
+  margin-left: 10px;
+}
 
