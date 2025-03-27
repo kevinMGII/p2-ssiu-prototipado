@@ -1,9 +1,9 @@
-const socket = io(); // Conectar con el servidor WebSocket
+const socket = io();
 
 socket.on('connect', () => {
-  console.log('Conectado al servidor');
+  document.getElementById('status').textContent = "Conexión establecida correctamente.";
 });
 
 socket.on('disconnect', () => {
-  console.log('Desconectado del servidor');
+  document.getElementById('status').textContent = "Desconectado del servidor.";
 });
