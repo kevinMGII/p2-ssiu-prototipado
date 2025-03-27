@@ -6,6 +6,7 @@ Prototipado e implementación del asistente de reuniones.
  -------------------------------------------------------
 
  Para lanzar el servidor a múltiples dispositivos:
+ 
    0. npm init -y                     # Inicializar un proyecto Node.js 
    1. npm install express socket.io   # Instalar dependencias necesarias
    2. ipconfig                        # Windows  
