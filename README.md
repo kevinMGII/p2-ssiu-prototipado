@@ -19,3 +19,6 @@ Prototipado e implementación del asistente de reuniones.
    5. http://localhost:3000    # En un navegador
    6. http://IP_LOCAL:3000     # Desde otro dispositivo en la misma red, acceder al servidor usando la IP obtenida
 
+
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+
