@@ -1,9 +1,40 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin-top: 20%;
+
+/* ____________ Pantalla de Inicio _____________ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-h1 {
-  color: green;
+.pantalla-inicio {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #e6f3ff, #007bff);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
 }
+
+
+.logo-didasko {
+  width: 15vw;
+  margin-bottom: 1vh;
+}
+
+.texto-inicio {
+  font-size: 2rem;
+  color: #c8f2ff;
+  margin-bottom: 6vh;
+}
+
+.qr-inicio {
+  width: 10vw;
+  height: 21vh;
+  border-radius: 1vw;
+}
+
+/* _________________________________________ */
