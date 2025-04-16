@@ -1,14 +1,12 @@
-// Conectar al servidor HTTPS
-const socket = io({
-  secure: true // Forzar conexión segura
-});
+// | -----------------------------------------------------------------------|
+// | Este archivo es el punto de entrada principal para la aplicación.      |
+// | Ejecuta la inicialización de Socket.IO (si corresponde) y la detección |
+// | de eventos táctiles.                                                   |
+// |------------------------------------------------------------------------|
 
-socket.on('connect', () => {
-  document.getElementById('status').textContent = "Conexión segura establecida correctamente.";
-  document.getElementById('status').style.color = "green";
-});
+document.addEventListener("DOMContentLoaded", function() {
 
-socket.on('disconnect', () => {
-  document.getElementById('status').textContent = "Desconectado del servidor.";
-  document.getElementById('status').style.color = "red";
+  initSocketForSpecialScreens();    // Inicializar la conexión con Socket.IO en las pantallas especiales.
+  
+  initializeTouchEvents();          // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
 });
