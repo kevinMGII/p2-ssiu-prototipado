@@ -38,9 +38,8 @@ function initializeSocketIO() {                                               //
   function initSocketForSpecialScreens() {      // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
     var currentPath = window.location.pathname;                                           // Obtenemos la ruta actual del documento.
     var isLanguageScreen = (currentPath.indexOf("language-screen.html") !== -1);          // Verificamos si la página es la de idioma.
-    var isErrorScreen = (currentPath.indexOf("error-screen.html") !== -1);                // Verificamos si la página es la de error.
     
-    if (isLanguageScreen || isErrorScreen) {                                             // Si la página es de lenguaje o de error...
+    if (isLanguageScreen) {                                                              // Si la página es de lenguaje o de error...
       initializeSocketIO();                                                              // Llamamos a la función que inicializa Socket.IO.
     }
   }
