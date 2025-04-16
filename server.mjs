@@ -1,36 +1,43 @@
-import express from 'express';
-import { Server } from 'socket.io';
 import https from 'https';
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-// Necesario para usar __dirname en ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import express from 'express';
+import { Server } from 'socket.io';
 
 const app = express();
 const PORT = 3000;
 
-// Cargar certificados SSL
-const sslOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
-};
-
-// Crear servidor HTTPS
-const server = https.createServer(sslOptions, app);
-const io = new Server(server);
-
+// Servir contenido estático desde carpeta /public
 app.use(express.static('public'));
 
-// Conexión de WebSocket
-io.on('connection', (socket) => {
-  console.log('Cliente conectado');
-  socket.on('disconnect', () => console.log('Cliente desconectado'));
+// Crear el servidor HTTPS
+const httpsServer = https.createServer({
+  key: fs.readFileSync('./key.pem'),
+  cert: fs.readFileSync('./cert.pem')
+}, app);
+
+// Crear instancia de socket.io y asociarla al servidor HTTPS
+const io = new Server(httpsServer, {
+  cors: {
+    origin: "*"
+  }
 });
 
-// Iniciar servidor en todas las interfaces de red
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Servidor HTTPS corriendo en https://localhost:${PORT}`);
+io.on('connection', (socket) => {
+  console.log('[SOCKET.IO] Cliente conectado:', socket.id);
+
+  socket.on('gesto', (data) => {
+    console.log('[SOCKET.IO] Gesto recibido:', data);
+    if (data.tipo === 'giro-derecha') {
+      console.log('[SOCKET.IO] Emitiendo cambio a undefined.html');
+      io.emit('actualizarInterfaz', 'undefined.html');
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('[SOCKET.IO] Cliente desconectado:', socket.id);
+  });
+});
+
+httpsServer.listen(PORT, () => {
+  console.log(`Servidor escuchando en https://localhost:${PORT}`);
 });
