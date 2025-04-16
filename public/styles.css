@@ -21,7 +21,7 @@ html, body {
 
 
 .logo-didasko {
-  width: 15vw;
+  width: 15em;
   margin-bottom: 1vh;
 }
 
@@ -32,8 +32,6 @@ html, body {
 }
 
 .qr-inicio {
-  width: 10vw;
-  height: 21vh;
   border-radius: 1vw;
 }
 

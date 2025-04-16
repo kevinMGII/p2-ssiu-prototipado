@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <title>Didasko - Inicio</title>
-    <script>
+  <script>
     if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       window.location.href = "movil.html"; 
     }
@@ -17,7 +19,7 @@
     <div>
       <img src="images/logo.png" alt="Logo Didasko" class="logo-didasko" />
       <p class="texto-inicio">Conecta tu móvil<br>para empezar</p>
-      <img src="images/qr.png" alt="Código QR" class="qr-inicio" />
+      <img src="images/qr.png" alt="Código QR" class="qr-inicio" id="qr-code"/>
     </div>
   </div>
 
@@ -78,5 +80,6 @@
     </div>
   
   <script src="script.js"></script>
+  <script src="qr.js"></script>
 </body>
 </html>
