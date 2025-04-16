@@ -1,72 +1,65 @@
-/* Reinicios básicos (opcional) */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Hacemos que la página ocupe la altura total del dispositivo y se evite el scroll */
 html, body {
   width: 100%;
-  height: 100vh;
-  font-family: sans-serif; /* Ajusta la fuente si lo requieres */
-  overflow: hidden; /* Evita el scroll */
+  min-height: 100%;
+  font-family: sans-serif;
+  overflow-x: hidden;
 }
 
-/* Contenedor principal */
 body {
   display: flex;
-  flex-direction: column; /* La columna contendrá la parte de error arriba y la parte de repetición abajo */
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: #002E9B; /* Ajusta con el color exacto de Figma */
+  background-color: #002E9B;
 }
 
-/* Sección con la X roja y el mensaje */
 .error-container {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 60px; /* Ajusta si necesitas más/menos espacio */
+  padding: 60px 5vw 20px;
 }
 
-/* Ícono de la X roja */
 .error-icon {
-  width: 50vw;        /* Ajusta al tamaño requerido por tu diseño */
+  width: 50vw;
   height: auto;
-  margin-bottom: 20px; /* Espacio entre la imagen y el texto */
+  margin-bottom: 20px;
 }
 
 .error-message {
-  color: #FFFFFF;           /* Texto en blanco */
-  font-size: 3.5rem;        /* Ajusta el tamaño de fuente */
-  line-height: 1.3;         /* Ajusta la separación de líneas */
+  color: #FFFFFF;
+  font-size: 3.4rem;
+  line-height: 1.3;
   text-align: center;
-  max-width: 90vw;          /* Limita el ancho máximo al 90% del viewport */
-  padding: 0 5vw;           /* Agrega un poco de margen interno a ambos lados */
-  margin: 0 auto;           /* Centra horizontalmente el bloque */
+  max-width: 90vw;
 }
 
 .repeat-section {
   width: 100%;
-  background-color: #0A62D0; /* Ajusta con el color exacto de Figma (barra inferior) */
+  background-color: #0A62D0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8vw 0;
+  padding: 6vw 5vw;
+  flex-shrink: 0;
 }
 
-/* Ícono de doble toque */
 .double-tap-icon {
-  width: 38vw; /* Ajusta según requieras */
+  width: 30vw;
   height: auto;
-  margin-right: 10vw;
+  margin-right: 6vw;
 }
 
-/* Texto "Repetir" */
 .repeat-text {
   color: #FFFFFF;
-  font-size: 3rem;
-  font-weight: 500; /* Ajusta según el diseño */
+  font-size: 2.5rem;
+  font-weight: 500;
 }
