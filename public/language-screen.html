@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pantalla de Idioma</title>
+  <link rel="stylesheet" href="language.css" />
+</head>
+<body>
+  <div class="language-screen">
+    <div class="language-container">
+
+      <img src="images/check-verde.png" alt="Check verde" class="check-icon" />
+
+      <p class="language-title">Has escogido el idioma:</p>
+
+      <img src="images/bandera-espana.png" alt="Bandera del idioma" class="language-flag" id="flagImage" />
+
+      <p class="language-name" id="languageName">Español</p>
+    </div>
+
+    <div class="continue-section">
+      <div class="continue-item">
+        <img
+          src="images/continuar-derecha.png"
+          alt="Teléfono con flecha a la derecha"
+          class="continue-icon"
+        />
+        <p class="continue-text">Continuar</p>
+      </div>
+
+      <div class="repeat-item">
+        <img
+          src="images/double-tap.png"
+          alt="Doble toque x2"
+          class="repeat-icon"
+        />
+        <p class="repeat-text">Repetir</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="log.js"></script>
+  <script src="modulo-socket.js"></script>
+  <script src="modulo-toques.js"></script>
+  <script src="idioma.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
