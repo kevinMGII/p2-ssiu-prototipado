@@ -35,6 +35,11 @@ html, body {
   border-radius: 1vw;
 }
 
+#qr-code {
+  align-items: center;
+  justify-content: center;
+}
+
 /* _________________________________________ */
 
 /* _________ Pantalla de Opciones __________ */
