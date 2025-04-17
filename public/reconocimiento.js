@@ -31,17 +31,24 @@ document.addEventListener("DOMContentLoaded", () => {                           
       transcriptElement.textContent = "Error al reconocer la voz.";              // Informa al usuario
     };
   
-    recognition.onresult = (event) => {                                          // Evento que se dispara cuando se obtiene un resultado exitoso
-      const textoReconocido = event.results[0][0].transcript.trim();             // Extrae el texto reconocido
-      console.log("[DEBUG] Texto reconocido:", textoReconocido);                 // Lo muestra en consola
-      transcriptElement.textContent = textoReconocido;                           // Muestra el texto en pantalla
-  
-      if (textoReconocido.toLowerCase() === "buenos días") {                     // Redirige según el contenido del texto reconocido
-        window.location.href = "language-screen.html";                           // Si dice "buenos días", va a la pantalla de idioma
+    recognition.onresult = function(event) {
+
+      var textoReconocido = event.results[0][0].transcript.trim();   // Extrae el texto reconocido
+      console.log("[DEBUG] Texto reconocido:", textoReconocido);     // Lo muestra en consola
+      transcriptElement.textContent = textoReconocido;               // Muestra el texto en pantalla
+    
+      var tiempoDeEspera = 1200;                                      // Variable para cuanto queremos esperar (1200 milisegundos)
+    
+      if (textoReconocido.toLowerCase() === "buenos días") {          // Comprobamos si el usuario dice "buenos días"
+        setTimeout(function() {                                       // Si es "buenos días", esperamos y luego vamos a language-screen.html
+          window.location.href = "language-screen.html";
+        }, tiempoDeEspera);
       } else {
-        window.location.href = "error-screen.html";                              // Si dice otra cosa, va a la pantalla de error
+        setTimeout(function() {                                       // Si es otra cosa, esperamos y luego vamos a error-screen.html
+          window.location.href = "error-screen.html";
+        }, tiempoDeEspera);
       }
-    };
+    };    
   
     recognition.onend = () => {                                                  // Evento que se dispara al finalizar el reconocimiento
       console.log("[DEBUG] Reconocimiento de voz finalizado.");                  // Mensaje de depuración
