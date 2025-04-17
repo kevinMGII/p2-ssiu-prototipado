@@ -8,7 +8,7 @@
 document.addEventListener("DOMContentLoaded", () => {                                      // Esperamos a que el contenido del DOM esté completamente cargado
     
     const transcriptElement = document.getElementById("transcript");                       // Obtenemos el elemento donde se mostrará el texto reconocido
-    const micImg = document.getElementById("mic-img");
+    const micImg = document.getElementById("mic-img");                                     // Obtenemos el microfono
   
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;  // Verificamos compatibilidad con el navegador
   
@@ -45,8 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {                           
       var tiempoDeEspera = 1200;                                      // Variable para cuanto queremos esperar (1200 milisegundos)
     
       if (textoReconocido.toLowerCase() === "buenos días") {          // Comprobamos si el usuario dice "buenos días"
+        sessionStorage.setItem("selectedLanguage", "es");
         setTimeout(function() {                                       // Si es "buenos días", esperamos y luego vamos a language-screen.html
           window.location.href = "language-screen.html";
+        }, tiempoDeEspera);
+      } else if (textoReconocido === "good morning") {                // Comprobamos si el usuario dice "good morning"
+        sessionStorage.setItem("selectedLanguage", "en");             // Establecemos el idioma elegido como inglés
+        setTimeout(function() {                                       // Si es "good morning", esperamos y luego vamos a language-screen.html
+          window.location.href = "language-screen.html";  
         }, tiempoDeEspera);
       } else {
         setTimeout(function() {                                       // Si es otra cosa, esperamos y luego vamos a error-screen.html
