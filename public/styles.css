@@ -238,3 +238,40 @@ html, body {
 }
 
  /*________________________________ */
+
+
+
+/* ________Pantalla de Subtítulos________ */
+
+.pantalla-subtitulos {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: white; /* ← fondo blanco */
+  font-family: Arial, sans-serif;
+  color: #001f8b; /* texto azul */
+  box-sizing: border-box;
+}
+
+.titulo-subtitulos {
+  font-size: 6rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  color: #001f8b; /* azul */
+}
+
+.subtitulo-subtitulos {
+  font-size: 2.5rem;
+  color: #007bff; /* azul claro */
+  line-height: 1.5;
+  max-width: 24vw;
+}
+
+.instruccion-azul {
+  font-size: 2.2rem;
+  color: #001f8b; /* azul */
+  text-align: center;
+}
+
+ /*________________________________ */
