@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+
+
+/* ____________ Menu Principal _____________ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.pantalla-opciones {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.lado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  font-size: 4rem;
+}
+
+.unirse {
+  background-color: white;
+  color: #003087; 
+}
+
+.unirse p {
+  color: #007ED1; 
+  font-size: 2.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  position: relative;
+  top: -30px;
+}
+
+.unirse h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+}
+
+.crear {
+  background-color: #001f8b; 
+  color: white;
+}
+
+.crear p {
+  color: #007ED1; 
+  font-size: 2.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  position: relative;
+  top: -30px;
+}
+
+.crear h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+}
+
+.centro {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.movimiento {
+  width: 25vw; 
+  height: auto;
+  position: relative;
+  bottom: -30px;
+}
+

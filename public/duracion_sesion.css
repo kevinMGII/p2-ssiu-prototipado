@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.pantalla-participantes {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #001f8b;
+  font-family: Arial, sans-serif;
+  color: white;
+  box-sizing: border-box;
+}
+
+.columna {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.izquierda {
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.progreso-iconos {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.progreso-iconos img {
+  height: 12vh;
+  width: auto;
+}
+
+.titulo-participantes {
+  font-size: 6rem;
+  margin: 0;
+  line-height: 1.2;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+}
+
+.subtitulo-participantes {
+  font-size: 2rem;
+  color: #00cfff;
+  line-height: 1.5;
+  max-width: 24vw;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+}
+
+.derecha {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contenedor-movil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-movil {
+  width: 25vw;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.instruccion {
+  font-size: 1.6rem;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}

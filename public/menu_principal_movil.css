@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+
+
+/* ____________ Menu Principal _____________ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.pantalla-opciones {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+
+.lado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  font-size: 4rem;
+}
+
+.unirse {
+  background-color: white;
+  color: #003087; 
+}
+
+
+.unirse h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+	font-size: 1.05em;
+}
+
+.crear {
+  background-color: #001f8b; 
+  color: white;
+}
+
+
+.crear h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+	font-size: 1.05em;
+}
+
+.movimiento-izquierda {
+  width: 60vw; 
+  height: auto;
+  position: relative;
+  right: 10vw;
+}
+
+.movimiento-derecha {
+  width: 60vw; 
+  height: auto;
+  position: relative;
+  right: -10vw;
+}
+
+
+@media (max-height: 600px) {
+  /* Estilos para pantallas de 768px o menos (como móviles) */
+
+.unirse h1 {
+	font-size: 0.7em;
+}
+
+.crear h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+	font-size: 0.7em;
+}
+  
+}
+
+@media (max-width: 380px) {
+  /* Estilos para pantallas de 768px o menos (como móviles) */
+
+.unirse h1 {
+	font-size: 0.7em;
+}
+
+.crear h1 {
+	font-family: 'Outfit', sans-serif;
+	font-weight: 600;
+	font-size: 0.7em;
+}
+  
+}

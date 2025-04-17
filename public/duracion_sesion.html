@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="/socket.io/socket.io.js"></script>
+  <title>Didasko - Inicio</title>
+  <script>
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      window.location.href = "duracion_sesion_movil.html"; 
+    }
+  </script>
+  <link rel="stylesheet" href="duracion_sesion.css" />
+</head>
+
+<body>
+<div class="pantalla-participantes">
+      <div class="columna izquierda">
+        <div class="progreso-iconos">
+          <img src="images/icono1_blanco.png" alt="Paso 1" /> 
+          <img src="images/flecha.png" alt="Flecha" />
+          <img src="images/icono2_azul.png" alt="Paso 2" />
+          <img src="images/flecha.png" alt="Flecha" />
+          <img src="images/icono3.png" alt="Paso 3" />
+          <img src="images/flecha.png" alt="Flecha" />
+          <img src="images/icono4.png" alt="Paso 4" />
+        </div>
+        <h1 class="titulo-participantes">Duración de<br>sesión</h1>
+        <p class="subtitulo-participantes"> 
+		  Haga movimientos en el <br>
+		  móvil para aumentar/<br>
+		  disminuir la duración de <br>
+		  la reunión (notificación)
+        </p>
+      </div>
+      <div class="columna derecha">
+        <div class="contenedor-movil">
+          <img src="images/movil_participantes.png" alt="movil_participantes" class="imagen-movil" />
+          <p class="instruccion">
+            <strong>Mira tu móvil<br>para seguir los<br>siguientes pasos</strong>
+          </p>
+        </div>
+      </div>
+</div>
+</body>
+</html>
