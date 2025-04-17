@@ -8,6 +8,7 @@
 document.addEventListener("DOMContentLoaded", () => {                                      // Esperamos a que el contenido del DOM esté completamente cargado
     
     const transcriptElement = document.getElementById("transcript");                       // Obtenemos el elemento donde se mostrará el texto reconocido
+    const micImg = document.getElementById("mic-img");
   
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;  // Verificamos compatibilidad con el navegador
   
@@ -24,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {                           
   
     recognition.onstart = () => {                                                // Evento que se dispara cuando inicia el reconocimiento
       console.log("[DEBUG] Reconocimiento de voz iniciado.");                    // Mensaje de depuración
+      var tiempo_verde = 300;                                                    // Esperamos 300ms antes de poner el micro verde
+      setTimeout(function() {                                                    // Esperamos y luego cambiamos a la imagen, que se vea el cambio bien
+        micImg.src = "images/microfono-nivel-verde.png";
+      }, tiempo_verde);
     };
   
     recognition.onerror = (event) => {                                           // Evento que se dispara si ocurre un error durante el reconocimiento
@@ -52,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {                           
   
     recognition.onend = () => {                                                  // Evento que se dispara al finalizar el reconocimiento
       console.log("[DEBUG] Reconocimiento de voz finalizado.");                  // Mensaje de depuración
+      micImg.src = "images/microfono-nivel.png";
     };
     
     recognition.start();                                                         // Iniciar el reconocimiento una vez cargue la página
