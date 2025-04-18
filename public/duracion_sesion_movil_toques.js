@@ -1,5 +1,7 @@
 // La rotación de la imagen del reloj iniciará al cargarse el DOM
 
+let continuar = false;
+
 document.addEventListener("DOMContentLoaded", () => {
   // Consigo del html el indicator (manecilla invisible del reloj), numero de minutos que actualiza, la mano del reloj y el "contenedor" de los segmentos.
   // El dial es donde se encuentra el reloj, y el trailContainer basicamente. Útil para leer ahi los movimientos del dedo.
@@ -88,6 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
       segmentos_dibujados.clear();
       trailContainer.innerHTML = ""; // Lo actualizo en el html tambien
     }
+    // Esto para permitir usar el boton de "continuar" cuando el reloj no llega a 0 minutos, pues no tendria mucho sentido.
+    if (minutes == 0) {
+      continuar = false;
+    }
+    else {
+      continuar = true;
+    }
   }
 
   // Función para dibujar un segmento en el contenedor de la estela (trailContainer) en un ángulo específico
@@ -98,3 +107,50 @@ document.addEventListener("DOMContentLoaded", () => {
 	  trailContainer.appendChild(segment);
   }
 });
+
+
+/*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX*/
+
+/* |---------------------------------------------------------------------|
+   | Este módulo se encarga de:                                          |
+   | - Inicializar la conexión con Socket.IO.                            |
+   | - Configurar la detección de gestos de giro (deviceorientation)     |
+   |   condicionado para emitir eventos hacia el servidor.               |
+   | - Escuchar el evento "actualizarInterfaz" para redirigir según la   |
+   |   ruta indicada.                                                    |
+   |---------------------------------------------------------------------|
+ */
+
+
+function initializeGestoDuracion() {
+window.addEventListener("deviceorientation", function(event) { // Detecta cambios en la orientación del dispositivo.
+  var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
+  var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
+  if (gamma > 45 && continuar == true) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
+      // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
+      const cs = localStorage.getItem('session'); // conseguir código de sesión
+      console.log("[DEBUG] Gesto detectado: girar a la derecha");
+      // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
+      socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
+      // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
+  }
+});
+
+  socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
+      console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
+      window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
+  });
+}
+
+
+// Función que determina si se debe inicializar Socket.IO.
+function initSocketForGestosDuracion() {                           // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
+  var currentPath = window.location.pathname;                      // Obtenemos la ruta actual del documento.
+  // Verificamos si la página es la de duracion_sesion_movil.
+  var isDuration = (currentPath.indexOf("duracion_sesion_movil.html") !== -1);
+
+  if (isDuration) {                                                // Si es una de esas páginas:
+    initializeGestoDuracion();                                     // Llamamos a la función que inicializa Socket.IO.
+  }
+}
+

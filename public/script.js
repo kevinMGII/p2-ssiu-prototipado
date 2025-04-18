@@ -71,7 +71,10 @@ document.addEventListener("DOMContentLoaded", function() {
         initializeTouchEvents();          // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
       } catch (error) { ; }
 
-      // Verificar si la URL contiene 'index.html' en cualquier parte
+      try {
+        initSocketForGestosDuracion();    // Inicializar la conexión con Socket.IO en las pantallas especiales. Pero especificamente para la duración de la sesión.
+      } catch (error) { ; }
+
       try {
         generateQr();                   // Generar el código QR con la dirección IP.
       } catch (error) { ; }

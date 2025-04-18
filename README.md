@@ -16,8 +16,8 @@ Prototipado e implementación del asistente de reuniones.
    `# El firewall debe permitir conexiones en el puerto 3000`
       
    3. node server.mjs > server_log.log 2> server_err.log
-   4. http://localhost:3000    # En un navegador
-   5. http://IP_LOCAL:3000     # Desde otro dispositivo en la misma red, acceder al servidor usando la IP obtenida
+   4. https://localhost:3000    # En un navegador
+   5. https://IP_LOCAL:3000     # Desde otro dispositivo en la misma red, acceder al servidor usando la IP obtenida
 
 
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
