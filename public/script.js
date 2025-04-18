@@ -55,12 +55,12 @@ socket.on("connect", () => {
 
 document.addEventListener("DOMContentLoaded", function() {
 
-  /*try {
+  try {
     initSocketForSpecialScreens();    // Inicializar la conexión con Socket.IO en las pantallas especiales.  
   } catch (error) { ; }
   try {
     initializeTouchEvents();          // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
-  } catch (error) { ; }*/
+  } catch (error) { ; }
   try {
     generateQr();          // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
   } catch (error) { ; }
