@@ -9,30 +9,24 @@
  */
 
 
-function initializeSocketIO() {                                               // Inicializamos Socket.IO y configuramos los listeners.
-    var scriptElement = document.createElement('script');                     // Crear un elemento <script> para cargar la librería Socket.IO desde el CDN.
-    scriptElement.src = "https://cdn.socket.io/4.5.4/socket.io.min.js";       // Asignamos la URL del script de Socket.IO al atributo "src" del elemento script, para que el nav sepa.
+function initializeSocketIO() {
+    // La librería de Socket.IO ya está cargada en el HTML, así que ahora solo se configura la conexión.
+    var socket = io(); // Inicializa la conexión con el servidor de Socket.IO.
 
-    
-    scriptElement.onload = function() {       // Cuando el script se cargue, configuramos la conexión y metemos los listeners.
-      var socket = io();                      // La función "io()" inicializa la conexión con el servidor de Socket.IO.
-      
-      window.addEventListener("deviceorientation", function(event) {                   // Registramos el listener para el evento deviceorientation.
-        var gamma = event.gamma;                                                       // Extraemos la propiedad "gamma", que nos da la inclinación lateral
-        if (gamma > 45) {                                                              // Si el valor gamma es mayor a 45, se interpreta como un giro a la derecha.
-          console.log("[DEBUG] Gesto detectado: girar a la derecha");                  // Imprimimos en la consola que se ha detectado el gesto de girar a la derecha. 
-          socket.emit("gesto", { tipo: "giro-derecha" });                              // Mandamos al server a través de Socket.IO el evento "gesto" y propiedad "tipo" como "giro-derecha".
+    window.addEventListener("deviceorientation", function(event) { // Detecta cambios en la orientación del dispositivo.
+        var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
+        if (gamma > 45) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
+            console.log("[DEBUG] Gesto detectado: girar a la derecha");
+            socket.emit("gesto", { tipo: "giro-derecha" }); // Enviar el evento "giro-derecha" al servidor.
         }
-      });
-      
-      socket.on("actualizarInterfaz", function(ruta) {                                        // Escuchar el evento "actualizarInterfaz" para redirigir según la ruta recibida.
-        console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);                            // Imprimimos en la consola que se ha detectado la peticion de actualizar interfaz.
-        window.location.href = ruta;                                                          // Redirigimos el navegador a la nueva ruta indicada por el servidor.
-      });
-    };
-    
-    document.body.appendChild(scriptElement);                                                 // Metemos el elemento <script> al final del <body> para que se ejecute.
-  }
+    });
+
+    socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
+        console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
+        window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
+    });
+}
+
   
 // Función que determina si se debe inicializar Socket.IO.
   function initSocketForSpecialScreens() {      // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
