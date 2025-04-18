@@ -29,22 +29,34 @@ function getLocalIP() {
   const networkInterfaces = os.networkInterfaces();
   const platform = os.platform(); // Detectar sistema operativo
 
+  let ethernetIP = null;
+
   for (const interfaceName in networkInterfaces) {
+      const addresses = networkInterfaces[interfaceName];
+
       // Filtrar nombres de interfaces según el sistema operativo
       const isWiFiInterface = platform === 'win32'
           ? interfaceName.toLowerCase().includes('wi-fi') || interfaceName.toLowerCase().includes('wireless')
           : interfaceName.toLowerCase().includes('wlan') || interfaceName.toLowerCase().includes('wl');
 
-      if (isWiFiInterface) {
-          const addresses = networkInterfaces[interfaceName];
-          for (const address of addresses) {
-              if (address.family === 'IPv4' && !address.internal) {
-                  return address.address;
+      const isEthernetInterface = platform === 'win32'
+          ? interfaceName.toLowerCase().includes('ethernet')
+          : interfaceName.toLowerCase().startsWith('eth') || interfaceName.toLowerCase().startsWith('en');
+
+      for (const address of addresses) {
+          if (address.family === 'IPv4' && !address.internal) {
+              if (isWiFiInterface) {
+                  return address.address; // Priorizar Wi-Fi
+              }
+              if (!ethernetIP && isEthernetInterface) {
+                  ethernetIP = address.address; // Guardar la primera IP Ethernet válida
               }
           }
       }
   }
-  return 'IP Wi-Fi no encontrada';
+
+  // Si no se encuentra Wi-Fi, devolver la IP de Ethernet (si existe)
+  return ethernetIP || 'IP no encontrada';
 }
 
 /*
