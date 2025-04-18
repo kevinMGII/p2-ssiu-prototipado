@@ -132,8 +132,8 @@ io.on('connection', (socket) => {
     console.log('[SOCKET.IO] Gesto recibido:', data);
 
     if (data.tipo === 'giro-derecha') {
-      console.log('[SOCKET.IO] Emitiendo cambio a undefined.html');
-      io.emit('actualizarInterfaz', 'undefined.html');
+      console.log('[SOCKET.IO] Emitiendo cambio a duracion_sesion_movil.html');
+      io.emit('actualizarInterfaz', 'duracion_sesion_movil.html');
     }
   });
 
