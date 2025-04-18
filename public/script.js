@@ -80,14 +80,13 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       try {
-        generateQr();                   // Generar el código QR con la dirección IP.
-      } catch (error) { ; }
-      try {
         generateQrInvitacion();             // Generar el código QR con la dirección IP (invitacion).
       } catch (error) { ; }
+
       try {
         connectMovil();                     // Enviar al PC que el móvil se ha conectado (inicio)
       } catch (error) { ; }
+      
       try {
         detectDownloadInvitation();         // Enviar al PC que el móvil se ha conectado (inicio)
       } catch (error) { ; }
