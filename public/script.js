@@ -76,6 +76,13 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       try {
+        initSocketForGestosDuracion();    // Inicializar la conexión con Socket.IO en las pantallas especiales. Pero especificamente para la duración de la sesión.
+      } catch (error) { ; }
+
+      try {
+        generateQr();                   // Generar el código QR con la dirección IP.
+      } catch (error) { ; }
+      try {
         generateQrInvitacion();             // Generar el código QR con la dirección IP (invitacion).
       } catch (error) { ; }
       try {
