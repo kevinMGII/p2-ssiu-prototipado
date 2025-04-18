@@ -1,0 +1,82 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .pantalla-subtitulos {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: white;
+    font-family: Arial, sans-serif;
+    color: #001f8b;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .columna {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+  }
+  
+  .izquierda {
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  
+  .progreso-iconos {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .progreso-iconos img {
+    height: 12vh;
+    width: auto;
+  }
+  
+  .titulo-subtitulos {
+    font-size: 6rem;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.2;
+    color: #001f8b;
+  }
+  
+  .subtitulo-subtitulos {
+    font-size: 2.5rem;
+    color: #007bff;
+    line-height: 1.5;
+    max-width: 24vw;
+  }
+  
+  .derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .contenedor-movil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .imagen-movil {
+    width: 16vw;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .instruccion-azul {
+    font-size: 2.2rem;
+    color: #001f8b;
+    text-align: center;
+  }
+  
