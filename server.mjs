@@ -134,7 +134,8 @@ io.on('connection', (socket) => {
     }
     
     // asociar el socket a la nueva sesión
-    sessions[`${cs}`] = { [`${data.type}_sock`]: socket.id };
+    console.log(`[SOCKET.IO] Actualizo el cs:${cs} y para socket:${socket.id}`);
+    sessions[cs] = { [`${data.type}_sock`]: socket.id };
     fs.writeFile('./data/sessions.json', JSON.stringify(sessions), () => {
       console.log(`[SOCKET.IO] Sesión ${cs} usada por ${socket.id}`);
     });
@@ -166,8 +167,28 @@ io.on('connection', (socket) => {
     console.log('[SOCKET.IO] Gesto recibido:', data);
 
     if (data.tipo === 'giro-derecha') {
-      console.log('[SOCKET.IO] Emitiendo cambio a duracion_sesion_movil.html');
-      io.emit('actualizarInterfaz', 'duracion_sesion_movil.html');
+      console.log(`${sessions[data.cs].mobile_sock} == ${data.socket_des}`);
+      if (data.url.indexOf("language-screen.html") !== -1) { 
+        if (sessions[data.cs].mobile_sock == data.socket_des) { // Si es el movil de verdad, y no otro dispositivo
+          console.log('[SOCKET.IO] Emitiendo cambio a duracion_sesion_movil.html en Movil');
+          console.log('[SOCKET.IO] Emitiendo cambio a duracion_sesion.html en PC');
+          io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'duracion_sesion_movil.html');
+          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'duracion_sesion.html');
+        }
+        else {
+          console.log('[SOCKET.IO] El socket no corresponde a la sesión móvil. Ignorando gesto.');
+        }
+      }
+      else if (data.url.indexOf("menu_principal_movil.html") !== -1)
+        if (sessions[data.cs].mobile_sock == data.socket_des) {
+          console.log('[SOCKET.IO] Emitiendo cambio a movil.html en Movil');
+          console.log('[SOCKET.IO] Emitiendo cambio a index.html en PC');
+          io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'movil.html');
+          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'index.html');
+        }
+        else {
+          console.log('[SOCKET.IO] El socket no corresponde a la sesión móvil. Ignorando gesto.');
+        }
     }
   });
 

@@ -72,12 +72,10 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       // Verificar si la URL contiene 'index.html' en cualquier parte
-      if (window.location.pathname.includes("index.html")) { // Solo se ejecuta si la página es derivada de 'index.html'
-        try {
-          generateQr();                   // Generar el código QR con la dirección IP.
-        } catch (error) { ; }
+      try {
+        generateQr();                   // Generar el código QR con la dirección IP.
+      } catch (error) { ; }
       }
-    } 
     else {
       // Si la conexión aún no está lista, esperar un poco y volver a comprobar
       setTimeout(verificar_socket, 100);  // Reintentar cada 100ms (porque si) hasta que la conexión esté lista

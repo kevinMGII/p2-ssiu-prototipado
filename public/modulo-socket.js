@@ -10,14 +10,16 @@
 
 
 function initializeSocketIO() {
-    // La librería de Socket.IO ya está cargada en el HTML, así que ahora solo se configura la conexión.
-    var socket = io(); // Inicializa la conexión con el servidor de Socket.IO.
-
     window.addEventListener("deviceorientation", function(event) { // Detecta cambios en la orientación del dispositivo.
+        var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
         var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
         if (gamma > 45) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
+            // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
+            const cs = localStorage.getItem('session'); // conseguir código de sesión
             console.log("[DEBUG] Gesto detectado: girar a la derecha");
-            socket.emit("gesto", { tipo: "giro-derecha" }); // Enviar el evento "giro-derecha" al servidor.
+            // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
+            socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
+            // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
         }
     });
 
@@ -29,12 +31,13 @@ function initializeSocketIO() {
 
   
 // Función que determina si se debe inicializar Socket.IO.
-  function initSocketForSpecialScreens() {      // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
-    var currentPath = window.location.pathname;                                           // Obtenemos la ruta actual del documento.
-    var isLanguageScreen = (currentPath.indexOf("language-screen.html") !== -1);          // Verificamos si la página es la de idioma.
+  function initSocketForSpecialScreens() {                           // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
+    var currentPath = window.location.pathname;                      // Obtenemos la ruta actual del documento.
+    // Verificamos si la página es de lenguaje o el menú principal del móvil.
+    var isSpecialScreen = (currentPath.indexOf("language-screen.html") !== -1) || (currentPath.indexOf("menu_principal_movil.html") !== -1);
     
-    if (isLanguageScreen) {                                                              // Si la página es de lenguaje o de error...
-      initializeSocketIO();                                                              // Llamamos a la función que inicializa Socket.IO.
+    if (isSpecialScreen) {                                           // Si es una de esas páginas:
+      initializeSocketIO();                                          // Llamamos a la función que inicializa Socket.IO.
     }
   }
   
