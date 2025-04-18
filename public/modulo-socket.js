@@ -21,6 +21,11 @@ function initializeSocketIO() {
             socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
             // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
         }
+        else if (gamma < -45) {  // Si gamma es menor a -45, se interpreta como un giro a la izquierda
+          const cs = localStorage.getItem('session');  // Obtener el código de sesión
+          console.log("[DEBUG] Gesto detectado: girar a la izquierda");
+          socket.emit("gesto", { tipo: "giro-izquierda", url: currentPath, cs: cs, socket_des: socket.id });
+        }
     });
 
     socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
