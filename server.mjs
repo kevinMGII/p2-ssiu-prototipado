@@ -12,7 +12,7 @@ var sess_timeouts = [];
 // |--------------------------- SESIÓN (MÓVIL + PC) ---------------------------|
 
 // Conseguir IP del servidor
-function getLocalIP() {
+/*function getLocalIP() {
     const networkInterfaces = os.networkInterfaces();
     for (const interfaceName in networkInterfaces) {
         const addresses = networkInterfaces[interfaceName];
@@ -23,6 +23,28 @@ function getLocalIP() {
         }
     }
     return 'IP no encontrada';
+}*/
+
+function getLocalIP() {
+  const networkInterfaces = os.networkInterfaces();
+  const platform = os.platform(); // Detectar sistema operativo
+
+  for (const interfaceName in networkInterfaces) {
+      // Filtrar nombres de interfaces según el sistema operativo
+      const isWiFiInterface = platform === 'win32'
+          ? interfaceName.toLowerCase().includes('wi-fi') || interfaceName.toLowerCase().includes('wireless')
+          : interfaceName.toLowerCase().includes('wlan') || interfaceName.toLowerCase().includes('wl');
+
+      if (isWiFiInterface) {
+          const addresses = networkInterfaces[interfaceName];
+          for (const address of addresses) {
+              if (address.family === 'IPv4' && !address.internal) {
+                  return address.address;
+              }
+          }
+      }
+  }
+  return 'IP Wi-Fi no encontrada';
 }
 
 /*
