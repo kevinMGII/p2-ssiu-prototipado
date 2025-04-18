@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Didasko - Compartir Invitación</title>
+    <link rel="stylesheet" href="compartir-invitacion-styles.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+    <div class="left">
+        <div class="timeline">
+            <img src="images/icono1_blanco.png" alt="Paso 1" /> 
+            <img src="images/flecha.png" alt="Flecha" />
+            <img src="images/icono2.png" alt="Paso 2" />
+            <img src="images/flecha.png" alt="Flecha" />
+            <img src="images/icono3_azul.png" alt="Paso 3" />
+            <img src="images/flecha.png" alt="Flecha" />
+            <img src="images/icono4.png" alt="Paso 4" />
+        </div>
+        <div class="info-text">
+            <h1>Compartir<br>invitación</h1>
+            <h2>Mostramos el QR para<br>que los espectadores<br>puedan conectarse a la<br>sesión</h2>
+        </div>
+    </div>
+    <div class="right">
+        <div class="download-div">
+            <img src="images/logo.png" alt="Logo Didasko" class="logo-didasko" />
+            <div id="qr-code">
+                <div class="loader"></div>
+            </div> 
+        </div>
+        <p>Mira tu móvil<br>para compartir la<br> invitación</p>
+    </div>
+    <script src="qr-invitacion.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

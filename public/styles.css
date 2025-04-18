@@ -31,14 +31,30 @@ html, body {
   margin-bottom: 6vh;
 }
 
-.qr-inicio {
-  border-radius: 1vw;
+.loader {
+  border: 16px solid #001f8b;
+  border-top: 16px solid #007bff;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 #qr-code {
+  display: flex;
+  width: 15em;
+  height: 15em;
   align-items: center;
   justify-content: center;
+  background-color: white;
+  border-radius: 1em;
 }
+
 
 /* _________________________________________ */
 

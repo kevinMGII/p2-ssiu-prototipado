@@ -59,30 +59,6 @@ function getLocalIP() {
   return ethernetIP || 'IP no encontrada';
 }
 
-/*
-// Saber si un dispositivo ya tiene una sesión activa
-function findSession(type, id) {
-  if (sessions) {
-    for (const session of sessions) {
-      // Comprobar id según el tipo de dispositivo
-      if (type === "pc_sock") {
-        if (session["pc_sock"] === id) {
-            return session["session_id"];
-        }
-      } else if (type === 'mobile_sock') {
-        if (session["mobile_sock"] === id) {
-          return session["session_id"];
-        }
-      }
-    }
-    // Si no ha encontrado la sesión, devolver -1
-    return -1;
-  }
-  // Si no hay sesiones, devolver -1
-  return -1;
-}
-  */
-
 // |--------------------------- SESIÓN (MÓVIL + PC) ---------------------------|
 
 // Servir contenido estático desde carpeta /public
@@ -105,21 +81,10 @@ const io = new Server(httpsServer, {
 
 io.on('connection', (socket) => {
   console.log('[SOCKET.IO] Cliente conectado:', socket.id);
-  // Crear sesión para el cliente
-  /*
-  // 1. Detectar si es móvil o PC
-  const userAgent = socket.request.headers['user-agent'];
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
-  const deviceType = isMobile ? "mobile_sock" : "pc_sock";
-  console.log(`[SOCKET.IO] Tipo de dispositivo: ${deviceType}`);
-  // 2. Ver si ya tenía sesión
-  const cs = findSession(deviceType, socket.id);
-  if (cs != -1){
-    sessions[cs][deviceType] = socket.id;
-    fs.writeFile('./data/sessions.json', sessions);
-  }
-  */
 
+
+
+  /* NUEVA SESIÓN */
   socket.on('new_session', (data) => {   // data = 'type: "mobile"/"pc"'
     console.log('[SOCKET.IO] Creación de sesión recibida');
 
@@ -146,7 +111,9 @@ io.on('connection', (socket) => {
     socket.emit('new_session', cs.toString());
   });
 
-  // sólo se recible esta petición si el timestamp no ha pasado del tiempo establecido
+  
+  
+  /* ASOCIAR SESIÓN */
   socket.on('session', (data) => {   // data = 'cs, type: "mobile"/"pc"'
     console.log('[SOCKET.IO] Unión a sesión recibida:', data);
 
@@ -163,6 +130,9 @@ io.on('connection', (socket) => {
     socket.emit('session', response.toString());
   });
 
+
+
+  /* DETECTAR GESTOS */
   socket.on('gesto', (data) => {
     console.log('[SOCKET.IO] Gesto recibido:', data);
 
@@ -192,12 +162,26 @@ io.on('connection', (socket) => {
     }
   });
 
+
+
+  /* PEDIR DIRECCION IP */
   socket.on('ip', () => {
     const localIP = getLocalIP();
     console.log('[SOCKET.IO] IP local solicitada:', localIP);
     socket.emit('ip', localIP);
   });
 
+
+
+  /* DETECTAR GESTOS */
+  socket.on('change-html', (data) => {  // data = {cs, html}
+    console.log('[SOCKET.IO] Cambio de HTML enviado:', data, '(a recibir por', sessions[data.cs]["pc_sock"],')');
+    io.to(sessions[data.cs]["pc_sock"]).emit('actualizarInterfaz', data.html);
+  });
+
+
+
+  /* ABANDONAR PÁGINA */
   socket.on('abandono', (data) => { // data = 'cs'
     console.log('[SOCKET.IO] Cliente abandonando: ', socket.id, "; ", data);
     
@@ -205,6 +189,9 @@ io.on('connection', (socket) => {
     sess_timeouts[cs] = Date.now() + 5000;  // 5 mins;
   });
 
+
+
+  /* DESCONECTAR */
   socket.on('disconnect', () => { 
     console.log('[SOCKET.IO] Cliente desconectado:', socket.id);
   });

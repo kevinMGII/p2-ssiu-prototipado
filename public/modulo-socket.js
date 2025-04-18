@@ -22,11 +22,6 @@ function initializeSocketIO() {
             // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
         }
     });
-
-    socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
-        console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
-        window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
-    });
 }
 
   
@@ -39,5 +34,11 @@ function initializeSocketIO() {
     if (isSpecialScreen) {                                           // Si es una de esas páginas:
       initializeSocketIO();                                          // Llamamos a la función que inicializa Socket.IO.
     }
+    
+    console.log("[DEBUG] ENTRA PLS");
+    socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
+      console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
+      window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
+  }); 
   }
   

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pantalla de Idioma</title>
+    <link rel="stylesheet" href="compartir-invitacion-movil-styles.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="background">
+    <div class="top-section">
+        <div class="download-div" id="download-qr">
+            <img src="images/logo.png" alt="Logo Didasko" class="logo-didasko" />
+            <div id="qr-code">
+                <div class="loader"></div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="continue-section">
+      <div class="continue-item">
+        <img
+          src="images/continuar-derecha.png"
+          alt="Teléfono con flecha a la derecha"
+          class="continue-icon"
+        />
+        <p class="continue-text" id="continueText">Continuar</p>
+      </div>
+
+      <div class="repeat-item">
+        <img
+          src="images/double-tap.png"
+          alt="Doble toque x2"
+          class="repeat-icon"
+        />
+        <p class="repeat-text" id="repeatText">Descargar</p>
+      </div>
+    </div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="download-invitacion.js"></script>
+  <script src="qr-invitacion.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

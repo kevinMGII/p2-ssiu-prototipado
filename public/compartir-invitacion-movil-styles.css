@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #001f8b;
+}
+
+.background {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-section {
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-div {
+    width: 75%;
+    background-color: white;
+    border-radius: 1em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right p {
+    font-size: 2.5rem;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+.logo-didasko {
+    padding-top: 10%;
+    padding-bottom: 10%;
+    width: 50%;
+    height: auto;
+}
+
+.loader {
+    border: 16px solid #001f8b;
+    border-top: 16px solid #007bff;
+    border-radius: 50%;
+    width: 12em;
+    height: 12em;
+    animation: spin 2s linear infinite;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#qr-code {
+    display: flex;
+    width: 15em;
+    height: 15em;
+    justify-content: center;
+    background-color: white;
+    border-radius: 1em;
+    padding-bottom: 10%;
+}
+
+.continue-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0A62D0;
+    padding: 2vh 0;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.continue-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2vh;
+}
+
+.continue-icon {
+    width: 34vw;
+    margin-right: 14vw;
+}
+
+.continue-text {
+    color: #FFFFFF;
+    font-size: 2rem;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.repeat-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.repeat-icon {
+    width: 34vw;
+    margin-right: 14vw;
+}
+
+.repeat-text {
+    color: #FFFFFF;
+    font-size: 2rem;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}

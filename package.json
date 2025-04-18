@@ -1,1 +1,25 @@
-
+{
+  "name": "p2-ssiu-prototipado",
+  "version": "1.0.0",
+  "description": "Fase 2: Sistemas Interactivos y Ubicuos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinMGII/p2-ssiu-prototipado.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinMGII/p2-ssiu-prototipado/issues"
+  },
+  "homepage": "https://github.com/kevinMGII/p2-ssiu-prototipado#readme",
+  "dependencies": {
+    "@types/node": "^22.14.1",
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  }
+}

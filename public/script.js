@@ -64,16 +64,25 @@ document.addEventListener("DOMContentLoaded", function() {
     if (dom_listo) {
       // Si Socket.IO está listo, ejecutar el código que depende del DOM
       try {
-        initSocketForSpecialScreens();    // Inicializar la conexión con Socket.IO en las pantallas especiales.  
+        initSocketForSpecialScreens();      // Inicializar la conexión con Socket.IO en las pantallas especiales.  
       } catch (error) { ; }
 
       try {
-        initializeTouchEvents();          // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
+        initializeTouchEvents();            // Escuchamos la detección de eventos táctiles (doble tap y doble clic).
       } catch (error) { ; }
 
-      // Verificar si la URL contiene 'index.html' en cualquier parte
       try {
-        generateQr();                   // Generar el código QR con la dirección IP.
+        generateQr();                       // Generar el código QR con la dirección IP (inicio).
+      } catch (error) { ; }
+
+      try {
+        generateQrInvitacion();             // Generar el código QR con la dirección IP (invitacion).
+      } catch (error) { ; }
+      try {
+        connectMovil();                     // Enviar al PC que el móvil se ha conectado (inicio)
+      } catch (error) { ; }
+      try {
+        detectDownloadInvitation();         // Enviar al PC que el móvil se ha conectado (inicio)
       } catch (error) { ; }
       }
     else {
