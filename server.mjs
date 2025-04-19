@@ -204,7 +204,31 @@ io.on('connection', (socket) => {
     io.to(sessions[data.cs]["pc_sock"]).emit('actualizarInterfaz', data.html);
   });
 
+  socket.on('upload_slides', (data) => {
+    const { cs, file } = data;
+    console.log(`[upload_slides] recibido para sesión ${cs}:`, file.name);
 
+    // para gaurdar los pdfs en una carpeta de destino
+    const dir = `./public/uploads/${cs}`;
+    fs.mkdirSync(dir, { recursive: true });
+    const filePath = `${dir}/${file.name}`;
+
+    // escribimos el archivo
+    fs.writeFile(filePath, file.content, 'base64', (err) => {
+      if (err) {
+        console.error('[upload_slides] error al guardar:', err);
+        return;
+      }
+      console.log('[upload_slides] guardado en:', filePath);
+
+      if (pcSock) {
+        console.log('[upload_slides] emitiendo actualizarInterfaz a PC');
+        io.to(pcSock).emit('actualizarInterfaz', 'mostrar-diapositivas.html');
+      } else {
+        console.warn('[upload_slides] no hay pc_sock para sesión', cs);
+      }
+    });
+  });
 
   /* ABANDONAR PÁGINA */
   socket.on('abandono', (data) => { // data = 'cs'
