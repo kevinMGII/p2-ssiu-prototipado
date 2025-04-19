@@ -1,9 +1,13 @@
 // |-------------------------------------------------|
 // | Este módulo se encarga de:                      |
-// | - Conseguir la dirección IP local del servidor  |
+// | - Crear la sala para realizar la presentación   |
 // | - Generar el código QR para ususarios           |
 // |   que quieran unirse a la sesión                |
 // |-------------------------------------------------|
+
+function getNewRoom(){
+    
+}
 
 function generateQrInvitacion (){
     setTimeout(() => {

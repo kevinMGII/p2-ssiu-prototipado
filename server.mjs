@@ -33,6 +33,9 @@ const redirecciones = {
 var sessions = JSON.parse(fs.readFileSync('./data/sessions.json', 'utf8'));
 var sess_timeouts = [];
 
+var rooms = JSON.parse(fs.readFileSync('./data/rooms.json', 'utf8'));
+var room_timeouts = [];
+
 // |--------------------------- SESIÓN (MÓVIL + PC) ---------------------------|
 
 // Conseguir IP del servidor
@@ -240,6 +243,9 @@ io.on('connection', (socket) => {
     io.to(sessions[data.cs]["pc_sock"]).emit('actualizarInterfaz', data.html);
   });
 
+
+
+  /* SUBIR DIAPOSITIVAS */
   socket.on('upload_slides', (data) => {
     const { cs, file } = data;
     console.log(`[upload_slides] recibido para sesión ${cs}:`, file.name);
@@ -267,6 +273,52 @@ io.on('connection', (socket) => {
       }
     });
   });
+
+
+
+  /* CREAR SALA */
+  socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs}
+    console.log('[SOCKET.IO] Creación de sala recibida: ', data);
+
+    let cr = 0;
+    for (cr = 0; cr < room_timeouts.length; cr++) {                            // mirar todas las sesiones creadas
+      console.log(cr, " < ", room_timeouts.length);
+      console.log(room_timeouts[cr], " != -1 && < ", Date.now());
+      if (room_timeouts[cr] === undefined || (room_timeouts[cr] != -1 && room_timeouts[cr] < Date.now())) {                                  // cuando encuentre una sesión caducada, usar esa
+        console.log(`[SOCKET.IO] Sala ${cr} caducada, reutilizando...`);
+        break;
+      }
+    }
+    
+    // asociar ponente y duración
+    rooms[cr] = data;
+    fs.writeFile('./data/rooms.json', JSON.stringify(rooms), () => {
+      console.log(`[SOCKET.IO] Sala ${cr} para ponente ${data.ponente}`);
+    });
+
+    // reiniciar timeout
+    room_timeouts[rs] = -1;
+
+    socket.emit('new_room', cr.toString());
+  });
+
+
+
+
+    /* UNIRSE A SALA */
+    socket.on('join_room', (data) => {  // data = {room: cr, cliente: cs}
+      console.log('[SOCKET.IO] Unión a sala recibida: ', data);
+      
+      // asociar cliente
+      if (rooms[cr]["clientes"].find(cs) === -1){
+        rooms[cr]["clientes"].push(cs);
+      }
+
+      fs.writeFile('./data/rooms.json', JSON.stringify(rooms), () => {
+        console.log(`[SOCKET.IO] Sala ${cr} para ponente ${data.ponente}`);
+      });
+    });
+
 
   /* ABANDONAR PÁGINA */
   socket.on('abandono', (data) => { // data = 'cs'

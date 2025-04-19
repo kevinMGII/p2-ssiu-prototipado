@@ -1,6 +1,7 @@
 // La rotación de la imagen del reloj iniciará al cargarse el DOM
 
 let continuar = false;
+var minutes = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Consigo del html el indicator (manecilla invisible del reloj), numero de minutos que actualiza, la mano del reloj y el "contenedor" de los segmentos.
@@ -61,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Ajustamos la rotacion para que siempre esté en el rango [0, 360] y calculamos los minutos (como son 120 minutos, cada 3 grados es un minuto)
     const normalizedRotation = (rotation % 360 + 360) % 360;
-    const minutes = Math.round(normalizedRotation / 3);
+    minutes = Math.round(normalizedRotation / 3);
     minutos.textContent = minutes; // Lo actualizo en el HTML
 
     // Actualizo la posición y rotación del indicador y la imagen de la mano
@@ -127,6 +128,8 @@ window.addEventListener("deviceorientation", function(event) { // Detecta cambio
   var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
   var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
   if (gamma > 45 && continuar == true) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
+      localStorage.setItem('duracion') = minutes * 60 * 1000; // guardar la duración establecida en ms
+
       // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
       const cs = localStorage.getItem('session'); // conseguir código de sesión
       console.log("[DEBUG] Gesto detectado: girar a la derecha");
