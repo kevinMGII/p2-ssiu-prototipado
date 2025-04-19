@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Didasko - Móvil</title>
+    <link rel="stylesheet" href="styles/eleccion-subtitulos-movil.css" />
+  </head>
+  <body>
+
+
+<!-- PANTALLA IDIOMA Y MICROFONO -->
+    <div class="contenedor-movil">
+      <section id="mic-screen" class="state active">
+        <div class="mic-container">
+          <img id="mic-img" src="images/microfono-nivel-azul.png" alt="Micrófono" />
+          <div id="mic-fill"></div>
+        </div>
+        <p>Dí "Buenos días"</p>
+        <div id="transcript" style="margin-top:20px; font-size:1.5rem; color: #001f8b;"></div>
+      </section>
+    </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script/modulo-socket.js"></script>
+  <script src="script/modulo-toques.js"></script>
+  <script src="script/reconocimiento.js"></script>
+  <script src="script/script.js"></script>
+  </body>
+</html>
