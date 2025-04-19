@@ -61,9 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {                           
       }
     };    
   
-    recognition.onend = () => {                                                  // Evento que se dispara al finalizar el reconocimiento
-      console.log("[DEBUG] Reconocimiento de voz finalizado.");                  // Mensaje de depuración
-      micImg.src = "images/microfono-nivel.png";
+    recognition.onend = () => {                                                  
+      console.log("[DEBUG] Reconocimiento de voz finalizado.");                  
+    
+      const currentPage = window.location.pathname.split("/").pop();
+    
+      if (currentPage === "eleccion-subtitulos-movil.html") {
+        micImg.src = "images/microfono-nivel-azul.png";
+      } else {
+        micImg.src = "images/microfono-nivel.png";
+      }
     };
     
     recognition.start();                                                         // Iniciar el reconocimiento una vez cargue la página

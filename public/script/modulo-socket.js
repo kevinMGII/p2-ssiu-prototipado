@@ -11,9 +11,10 @@
 
 function initializeSocketIO() {
     window.addEventListener("deviceorientation", function(event) { // Detecta cambios en la orientación del dispositivo.
+      var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
         var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
         var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
-        if (gamma > 45) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
+        if (gamma > 45 ) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha (y no esta en languaje)
             // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
             const cs = localStorage.getItem('session'); // conseguir código de sesión
             console.log("[DEBUG] Gesto detectado: girar a la derecha");
@@ -21,7 +22,7 @@ function initializeSocketIO() {
             socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
             // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
         }
-        else if (gamma < -45) {  // Si gamma es menor a -45, se interpreta como un giro a la izquierda
+        else if (gamma < -45 && (currentPath.indexOf("language-screen.html") == -1)) {  // Si gamma es menor a -45, se interpreta como un giro a la izquierda
           const cs = localStorage.getItem('session');  // Obtener el código de sesión
           console.log("[DEBUG] Gesto detectado: girar a la izquierda");
           socket.emit("gesto", { tipo: "giro-izquierda", url: currentPath, cs: cs, socket_des: socket.id });

@@ -1,5 +1,6 @@
 import https from 'https';
 import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import { Server } from 'socket.io';
 import * as os from 'os';
@@ -249,25 +250,41 @@ io.on('connection', (socket) => {
   socket.on('upload_slides', (data) => {
     const { cs, file } = data;
     console.log(`[upload_slides] recibido para sesión ${cs}:`, file.name);
-  
+
     const dir = `./public/uploads/${cs}`;
+
+    // 1. Verificar si el directorio existe y eliminar archivos previos
+    if (fs.existsSync(dir)) {
+      // 2. Leer los archivos en la carpeta y eliminarlos
+      fs.readdirSync(dir).forEach((fileName) => {
+        const filePath = path.join(dir, fileName);
+        // Eliminar archivo
+        fs.unlinkSync(filePath);
+        console.log(`[upload_slides] archivo eliminado: ${filePath}`);
+      });
+    }
+
+    // 3. Crear el directorio si no existe
     fs.mkdirSync(dir, { recursive: true });
+
+    // 4. Definir la ruta del archivo y guardar el nuevo archivo
     const filePath = `${dir}/${file.name}`;
-  
+    
     fs.writeFile(filePath, file.content, 'base64', (err) => {
       if (err) {
         console.error('[upload_slides] error al guardar:', err);
         return;
       }
       console.log('[upload_slides] guardado en:', filePath);
-  
+
       // Emitir solo al PC para que cargue la vista de mostrar-diapositivas
       const pcSock = sessions[cs]?.pc_sock;
-      if (pcSock) {
-        console.log(
-          '[upload_slides] emitiendo actualizarInterfaz a PC → mostrar-diapositivas.html'
-        );
+      const movilSock = sessions[cs]?.mobile_sock;
+      if (pcSock && movilSock) {
+        console.log('[upload_slides] emitiendo actualizarInterfaz a movil → ponente_diapositivas.html');
+        console.log('[upload_slides] emitiendo actualizarInterfaz a PC → mostrar-diapositivas.html');
         io.to(pcSock).emit('actualizarInterfaz', 'mostrar-diapositivas.html');
+        io.to(movilSock).emit('actualizarInterfaz', 'ponente_diapositivas.html');
       } else {
         console.warn('[upload_slides] no hay pc_sock para sesión', cs);
       }

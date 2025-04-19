@@ -1,8 +1,3 @@
-const socket = io();
-
-// nos metemos como pc
-const cs = localStorage.getItem('session');
-socket.emit('session', { cs, type: 'pc' });
 
 // para cambiar la interfaz, a otra pagina
 socket.on('actualizarInterfaz', ruta => {
@@ -14,10 +9,18 @@ socket.on('actualizarInterfaz', ruta => {
 document.querySelector('.upload-icon').addEventListener('click', () => {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = 'application/pdf';
+  input.accept = 'application/pdf'; // Esto ya restringe la selección a archivos PDF, pero también validamos el tipo MIME
+
   input.onchange = () => {
     const file = input.files[0];
     if (!file) return;
+
+    // Validación del tipo MIME para asegurarse de que sea un PDF
+    if (file.type !== 'application/pdf') {
+      alert('Por favor, selecciona un archivo PDF.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       const b64 = reader.result.split(',')[1];
@@ -29,5 +32,7 @@ document.querySelector('.upload-icon').addEventListener('click', () => {
     };
     reader.readAsDataURL(file);
   };
+
   input.click();
 });
+

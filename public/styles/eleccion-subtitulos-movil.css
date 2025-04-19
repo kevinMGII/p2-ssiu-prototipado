@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+}
+
+.state {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.state.active {
+    display: flex;
+}
+
+#mic-img {
+    width: 200px;
+    height: auto;
+    position: relative;
+}
+
+#mic-screen p {
+    margin-top: 20px;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #001f8b;
+}
+
+.error #mic-img {
+    border: 4px solid red;
+}
+
+.mic-container {
+    position: relative;
+    width: 200px;
+}
+
+#mic-img {
+    width: 100%;
+    display: block;
+}
+
+#mic-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(0, 255, 0, 0.5);
+    pointer-events: none;
+}
