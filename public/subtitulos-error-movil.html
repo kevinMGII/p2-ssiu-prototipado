@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Error Screen</title>
+
+  <link rel="stylesheet" href="styles/subtitulos-error-movil.css" />
+</head>
+<body>
+  <div class="error-container">
+    <img
+      src="images/x-roja.png"
+      alt="X Roja"
+      class="error-icon"
+    />
+
+    <p class="error-message">
+      No se ha detectado el idioma.<br />
+      Repite la prueba
+    </p>
+  </div>
+
+  <div class="repeat-section">
+    <img
+      src="images/double-tap.png"
+      alt="Double Tap"
+      class="double-tap-icon"
+    />
+    <span class="repeat-text">Repetir</span>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script/modulo-socket.js"></script>
+  <script src="script/modulo-toques.js"></script>
+  <script src="script/error.js"></script>
+  <script src="script/script.js"></script>
+</body>
+</html>
