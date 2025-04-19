@@ -6,6 +6,30 @@ import * as os from 'os';
 
 const app = express();
 const PORT = 3000;
+
+const redirecciones = {
+  'giro-derecha': {
+    "/language-screen.html": {
+      "mobile": 'duracion_sesion_movil.html',
+      "pc": 'duracion_sesion.html'
+    },
+    "/menu_principal_movil.html": {
+      "mobile": 'movil.html',
+      "pc": 'idioma.html'
+    },
+    "/duracion_sesion_movil.html": {
+      "mobile": 'compartir-invitacion-movil.html',
+      "pc": 'compartir-invitacion.html'
+    }
+  },
+  'giro-izquierda': {
+    "/menu_principal_movil.html": {
+      "mobile": 'escaneo-movil.html',
+      "pc": 'escaneo.html'
+    }
+  }
+}
+
 var sessions = JSON.parse(fs.readFileSync('./data/sessions.json', 'utf8'));
 var sess_timeouts = [];
 
@@ -58,8 +82,8 @@ function getLocalIP() {
   // Si no se encuentra Wi-Fi, devolver la IP de Ethernet (si existe)
   return ethernetIP || 'IP no encontrada';
 }
-
-// |--------------------------- SESIÓN (MÓVIL + PC) ---------------------------|
+                               
+// |---------------------------------------------------------------------------|
 
 // Servir contenido estático desde carpeta /public
 app.use(express.static('public'));
@@ -135,7 +159,18 @@ io.on('connection', (socket) => {
   /* DETECTAR GESTOS */
   socket.on('gesto', (data) => {
     console.log('[SOCKET.IO] Gesto recibido:', data);
+    console.log(`${sessions[data.cs].mobile_sock} == ${data.socket_des}`);
+    if (sessions[data.cs].mobile_sock == data.socket_des) { // Si es el movil de verdad, y no otro dispositivo
+      console.log('[SOCKET.IO] Emitiendo cambio en Movil a ' + redirecciones[data.tipo][data.url]["mobile"]);
+      console.log('[SOCKET.IO] Emitiendo cambio en PC a ' + redirecciones[data.tipo][data.url]["pc"]);
+      io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', redirecciones[data.tipo][data.url]["mobile"]);
+      io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', redirecciones[data.tipo][data.url]["pc"]);
+    }
+    else {
+      console.log('[SOCKET.IO] El socket no corresponde a la sesión móvil. Ignorando gesto.');
+    }
 
+    /*
     if (data.tipo === 'giro-derecha') {
       console.log(`${sessions[data.cs].mobile_sock} == ${data.socket_des}`);
       if (data.url.indexOf("language-screen.html") !== -1) { 
@@ -185,6 +220,7 @@ io.on('connection', (socket) => {
         }
       }
     }
+      */
   });
 
 

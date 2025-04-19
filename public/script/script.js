@@ -90,6 +90,10 @@ document.addEventListener("DOMContentLoaded", function() {
       try {
         detectDownloadInvitation();         // Enviar al PC que el móvil se ha conectado (inicio)
       } catch (error) { ; }
+
+      try {
+        escanerQr();                        // Iniciar el escaner de QRs (escaneo-movil)
+      } catch (error) { ; }
       }
     else {
       // Si la conexión aún no está lista, esperar un poco y volver a comprobar
