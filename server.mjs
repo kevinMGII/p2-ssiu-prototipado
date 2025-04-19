@@ -274,9 +274,12 @@ io.on('connection', (socket) => {
 
       // Emitir solo al PC para que cargue la vista de mostrar-diapositivas
       const pcSock = sessions[cs]?.pc_sock;
-      if (pcSock) {
+      const movilSock = sessions[cs]?.mobile_sock;
+      if (pcSock && movilSock) {
+        console.log('[upload_slides] emitiendo actualizarInterfaz a movil → ponente_diapositivas.html');
         console.log('[upload_slides] emitiendo actualizarInterfaz a PC → mostrar-diapositivas.html');
         io.to(pcSock).emit('actualizarInterfaz', 'mostrar-diapositivas.html');
+        io.to(movilSock).emit('actualizarInterfaz', 'ponente_diapositivas.html');
       } else {
         console.warn('[upload_slides] no hay pc_sock para sesión', cs);
       }
