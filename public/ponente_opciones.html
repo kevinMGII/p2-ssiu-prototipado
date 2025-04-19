@@ -8,26 +8,30 @@
 </head>
 <body>
   <div class="container">
-      <div class="flex">
-		<div class="icon" >
-			<img src="images/file_icon.png" alt="Archivo">
-		</div>
-	  </div>
-      <div class="flex">
-		<div class="icon" >
-			<img src="images/sh_icon.png" alt="Monitor">
-		</div>
+    <div class="flex">
+      <div class="icon">
+        <img src="images/file_icon.png" alt="Archivo" class="upload-icon">
       </div>
-      <div class="flex">
-		<div class="icon" >
-			<img src="images/camara_icon.png" alt="Cámara">
-		</div>
+    </div>
+    <div class="flex">
+      <div class="icon">
+        <img src="images/sh_icon.png" alt="Monitor">
       </div>
+    </div>
+    <div class="flex">
+      <div class="icon">
+        <img src="images/camara_icon.png" alt="Cámara">
+      </div>
+    </div>
   </div>
   <div class="drag-area">
-	<div class="icon_deslizar" >
-		<img src="images/mano_deslizar.png" alt="Monitor">
-	</div>
+    <div class="icon_deslizar">
+      <img src="images/mano_deslizar.png" alt="Monitor">
+    </div>
   </div>
+
+  <!-- Scripts al final del body para el móvil -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/script/ponente_opciones.js"></script>
 </body>
 </html>
