@@ -94,6 +94,10 @@ document.addEventListener("DOMContentLoaded", function() {
       try {
         escanerQr();                        // Iniciar el escaner de QRs (escaneo-movil)
       } catch (error) { ; }
+
+      try {
+        changeToSub();                      // Iniciar el escaner de QRs (escaneo-movil)
+      } catch (error) { ; }
       }
     else {
       // Si la conexión aún no está lista, esperar un poco y volver a comprobar

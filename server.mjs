@@ -234,7 +234,7 @@ io.on('connection', (socket) => {
 
 
 
-  /* DETECTAR GESTOS */
+  /* DETECTAR CAMBIOS EN HTML */
   socket.on('change-html', (data) => {  // data = {cs, html}
     console.log('[SOCKET.IO] Cambio de HTML enviado:', data, '(a recibir por', sessions[data.cs]["pc_sock"],')');
     io.to(sessions[data.cs]["pc_sock"]).emit('actualizarInterfaz', data.html);
