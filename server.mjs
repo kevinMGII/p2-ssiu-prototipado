@@ -152,7 +152,7 @@ io.on('connection', (socket) => {
       else if (data.url.indexOf("menu_principal_movil.html") !== -1) {
         if (sessions[data.cs].mobile_sock == data.socket_des) {
           console.log('[SOCKET.IO] Emitiendo cambio a movil.html en Movil');
-          console.log('[SOCKET.IO] Emitiendo cambio a index.html en PC');
+          console.log('[SOCKET.IO] Emitiendo cambio a idioma.html en PC');
           io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'movil.html');
           io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'idioma.html');
         }
@@ -162,10 +162,10 @@ io.on('connection', (socket) => {
       }
       else if (data.url.indexOf("duracion_sesion_movil.html") !== -1) {
         if (sessions[data.cs].mobile_sock == data.socket_des) {
-          console.log('[SOCKET.IO] Emitiendo cambio a index.html en Movil');
-          console.log('[SOCKET.IO] Emitiendo cambio a index.html en PC');
-          io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'index.html');
-          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'index.html');
+          console.log('[SOCKET.IO] Emitiendo cambio a compartir-invitacion-movil en Movil');
+          console.log('[SOCKET.IO] Emitiendo cambio a compartir-invitacion en PC');
+          io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'compartir-invitacion-movil.html');
+          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'compartir-invitacion.html');
         }
         else {
           console.log('[SOCKET.IO] El socket no corresponde a la sesión móvil. Ignorando gesto.');
