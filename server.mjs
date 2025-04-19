@@ -207,22 +207,24 @@ io.on('connection', (socket) => {
   socket.on('upload_slides', (data) => {
     const { cs, file } = data;
     console.log(`[upload_slides] recibido para sesión ${cs}:`, file.name);
-
-    // para gaurdar los pdfs en una carpeta de destino
+  
     const dir = `./public/uploads/${cs}`;
     fs.mkdirSync(dir, { recursive: true });
     const filePath = `${dir}/${file.name}`;
-
-    // escribimos el archivo
+  
     fs.writeFile(filePath, file.content, 'base64', (err) => {
       if (err) {
         console.error('[upload_slides] error al guardar:', err);
         return;
       }
       console.log('[upload_slides] guardado en:', filePath);
-
+  
+      // Emitir solo al PC para que cargue la vista de mostrar-diapositivas
+      const pcSock = sessions[cs]?.pc_sock;
       if (pcSock) {
-        console.log('[upload_slides] emitiendo actualizarInterfaz a PC');
+        console.log(
+          '[upload_slides] emitiendo actualizarInterfaz a PC → mostrar-diapositivas.html'
+        );
         io.to(pcSock).emit('actualizarInterfaz', 'mostrar-diapositivas.html');
       } else {
         console.warn('[upload_slides] no hay pc_sock para sesión', cs);
