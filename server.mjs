@@ -154,7 +154,7 @@ io.on('connection', (socket) => {
           console.log('[SOCKET.IO] Emitiendo cambio a movil.html en Movil');
           console.log('[SOCKET.IO] Emitiendo cambio a index.html en PC');
           io.to(sessions[data.cs].mobile_sock).emit('actualizarInterfaz', 'movil.html');
-          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'index.html');
+          io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', 'idioma.html');
         }
         else {
           console.log('[SOCKET.IO] El socket no corresponde a la sesión móvil. Ignorando gesto.');
