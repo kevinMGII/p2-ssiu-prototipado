@@ -36,17 +36,18 @@ socket.on("connect", () => {
         console.log("[SOCKET.IO] Sesión reestablecida (", ok, "): ", cs, "; ", type);
         dom_listo = true;
       } else {
+        if (type === "pc") {
         console.log("[SOCKET.IO] Solicitando nueva sesión...");
         socket.emit("new_session", { type: type });
         socket.on("new_session", (i) => {
           localStorage.setItem('session', i);
           console.log("[SOCKET.IO] Nueva sesión obtenida: ", i);
-          if (type === "pc") {
-            window.location.href = "index.html";
-          } else {
-            window.location.href = "error.html";
-          }
-        });
+          alert("SESIÓN EXPIRADA! (tu o tu móvil se ha desconectado por mucho tiempo)\nRedirigiendo a página de inicio...")
+          window.location.href = "index.html";
+          });
+        } else {
+          window.location.href = "error.html";
+        }
         dom_listo = true; // Aunque en teoria no deberia llegar aqui
       }
     });

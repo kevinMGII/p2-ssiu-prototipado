@@ -1,1 +1,1 @@
-{"0":{"duracion":"300000","ponente":"0","clientes":[]},"1":{"duracion":"420000","ponente":"0","clientes":["2"]},"-1":{"duracion":12345,"ponente":"sample-cs","clientes":["sample-cs1","sample-cs2"]}}
+{"0":{"duracion":"300000","ponente":"0","clientes":[]},"1":{"duracion":"300000","ponente":"0","clientes":[]},"-1":{"duracion":12345,"ponente":"sample-cs","clientes":["sample-cs1","sample-cs2"]}}

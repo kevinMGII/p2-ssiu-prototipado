@@ -365,17 +365,29 @@ io.on('connection', (socket) => {
     }
   });
 
-  /* CREAR SALA */
-  socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs}
-    console.log('[SOCKET.IO] Creación de sala recibida: ', data);
 
-    let room = 0;
-    for (room = 0; room < room_timeouts.length; room++) {                            // mirar todas las sesiones creadas
-      console.log(room, " < ", room_timeouts.length);
-      console.log(room_timeouts[room], " != -1 && < ", Date.now());
-      if (room_timeouts[room] === undefined || (room_timeouts[room] != -1 && room_timeouts[room] < Date.now())) {                                  // cuando encuentre una sesión caducada, usar esa
-        console.log(`[SOCKET.IO] Sala ${room} caducada, reutilizando...`);
-        break;
+
+  /* CREAR SALA */
+  socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs, old_room: room}
+    console.log('[SOCKET.IO] Creación de sala recibida: ', data);
+    let room = -1;
+
+    // revisar si old_room sigue siendo valido
+    try{
+      if (rooms[data.old_room]["ponente"] == data.ponente && room_timeouts[data.old_room] && room_timeouts[data.old_room] > Date.now()){
+        room = parseInt(data.old_room);
+      }
+    } catch (error) { console.log(`[SOCKET.IO] Error en new_room: ${error}`); }
+    
+    // si no es valido
+    if (room == -1){
+      for (room = 0; room < room_timeouts.length; room++) {                            // mirar todas las sesiones creadas
+        console.log(room, " < ", room_timeouts.length);
+        console.log(room_timeouts[room], " != -1 && < ", Date.now());
+        if (room_timeouts[room] === undefined || (room_timeouts[room] != -1 && room_timeouts[room] < Date.now())) {                                  // cuando encuentre una sesión caducada, usar esa
+          console.log(`[SOCKET.IO] Sala ${room} caducada, reutilizando...`);
+          break;
+        }
       }
     }
     
