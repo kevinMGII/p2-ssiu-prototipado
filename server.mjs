@@ -240,8 +240,8 @@ io.on('connection', (socket) => {
 
   /* DETECTAR CAMBIOS EN HTML */
   socket.on('change-html', (data) => {  // data = {cs, html}
-    console.log('[SOCKET.IO] Cambio de HTML enviado:', data, '(a recibir por', sessions[data.cs]["pc_sock"],')');
-    io.to(sessions[data.cs]["pc_sock"]).emit('actualizarInterfaz', data.html);
+    console.log('[SOCKET.IO] Cambio de HTML enviado:', data, '(a recibir por', sessions[data.cs].pc_sock,')');
+    io.to(sessions[data.cs].pc_sock).emit('actualizarInterfaz', data.html);
   });
 
 
@@ -297,44 +297,58 @@ io.on('connection', (socket) => {
   socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs}
     console.log('[SOCKET.IO] Creación de sala recibida: ', data);
 
-    let cr = 0;
-    for (cr = 0; cr < room_timeouts.length; cr++) {                            // mirar todas las sesiones creadas
-      console.log(cr, " < ", room_timeouts.length);
-      console.log(room_timeouts[cr], " != -1 && < ", Date.now());
-      if (room_timeouts[cr] === undefined || (room_timeouts[cr] != -1 && room_timeouts[cr] < Date.now())) {                                  // cuando encuentre una sesión caducada, usar esa
-        console.log(`[SOCKET.IO] Sala ${cr} caducada, reutilizando...`);
+    let room = 0;
+    for (room = 0; room < room_timeouts.length; room++) {                            // mirar todas las sesiones creadas
+      console.log(room, " < ", room_timeouts.length);
+      console.log(room_timeouts[room], " != -1 && < ", Date.now());
+      if (room_timeouts[room] === undefined || (room_timeouts[room] != -1 && room_timeouts[room] < Date.now())) {                                  // cuando encuentre una sesión caducada, usar esa
+        console.log(`[SOCKET.IO] Sala ${room} caducada, reutilizando...`);
         break;
       }
     }
     
     // asociar ponente y duración
-    rooms[cr] = data;
+    rooms[room] = { duracion: data.duracion, ponente: data.ponente, clientes: [] };
     fs.writeFile('./data/rooms.json', JSON.stringify(rooms), () => {
-      console.log(`[SOCKET.IO] Sala ${cr} para ponente ${data.ponente}`);
+      console.log(`[SOCKET.IO] Sala ${room} para ponente ${data.ponente}`);
     });
 
     // reiniciar timeout
-    room_timeouts[rs] = -1;
+    room_timeouts[room] = -1;
 
-    socket.emit('new_room', cr.toString());
+    // enviar tanto a pc como a movil
+    io.to(sessions[data.ponente].mobile_sock).emit('new_room', room.toString());
+    io.to(sessions[data.ponente].pc_sock).emit('new_room', room.toString());
   });
 
 
 
 
-    /* UNIRSE A SALA */
-    socket.on('join_room', (data) => {  // data = {room: cr, cliente: cs}
-      console.log('[SOCKET.IO] Unión a sala recibida: ', data);
-      
-      // asociar cliente
-      if (rooms[cr]["clientes"].find(cs) === -1){
-        rooms[cr]["clientes"].push(cs);
-      }
+  /* UNIRSE A SALA */
+  socket.on('join_room', (data) => {  // data = {room, cliente: cs}
+    console.log('[SOCKET.IO] Unión a sala recibida: ', data);
+    
+    // asociar cliente (si no estaba asociado antes)
+    if (!rooms[data.room]["clientes"].includes(data.cliente)){
+      rooms[data.room]["clientes"].push(data.cliente);
+    }
 
-      fs.writeFile('./data/rooms.json', JSON.stringify(rooms), () => {
-        console.log(`[SOCKET.IO] Sala ${cr} para ponente ${data.ponente}`);
-      });
+    fs.writeFile('./data/rooms.json', JSON.stringify(rooms), () => {
+      console.log(`[SOCKET.IO] Sala ${data.room} para cliente ${data.cliente}`);
     });
+
+    // enviar a pc
+    io.to(sessions[data.cliente].pc_sock).emit('join_room', data.room.toString());
+  });
+
+
+
+  /* INICIAR CONTADOR DE SALA */
+  socket.on('start_room', (data) => {  // data = room
+    console.log('[SOCKET.IO] Inicio de sala recibido: ', data);
+    room_timeouts[parseInt(data)] = Date.now() + rooms[parseInt(data)]["duracion"];
+  });
+
 
 
   /* ABANDONAR PÁGINA */

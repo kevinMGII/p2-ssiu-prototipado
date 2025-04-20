@@ -4,19 +4,6 @@
 // | - Cuando escanea un código de sesión, redirige a esa página |
 // |-------------------------------------------------------------|
 
-/*
-function escanerQr() {
-    const escaner = new Html5QrcodeScanner(
-        "escaner-qr",
-        {fps: 10, qrbox: 250}
-    );
-
-    escaner.render((decodedText, decodedResult) => {
-        alert("QR = " + decodedText + "; " +  decodedResult);
-    });
-}
-*/
-
 function escanerQr() {
     console.log("AQUI");
     const html5QrCode = new Html5Qrcode("escaner-qr");
@@ -25,7 +12,7 @@ function escanerQr() {
     const onScanSuccess = (decodedText, decodedResult) => {
         // Mostrar el resultado del código QR
         alert("QR = " + decodedText + "; " +  decodedResult);
-        if (decodedText.search("idioma-sub.html") != -1) {
+        if (decodedText.search("eleccion-subtitulos-movil.html") != -1) {
             window.location.href = decodedText
         }
 

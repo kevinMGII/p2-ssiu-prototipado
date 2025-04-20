@@ -8,8 +8,17 @@ const type = (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) ? "mob
 const urlParams = new URLSearchParams(window.location.search);
 
 if (type === "mobile" && urlParams.size > 0) {
-  // Obtener el valor de 'cs'
-  localStorage.setItem('session', urlParams.get('cs'));
+  // Obtener el valor de 'cs' (si existe)
+  let param_cs = urlParams.get('cs');
+  if (param_cs){
+    localStorage.setItem('session', param_cs);
+  }
+
+  // obtener el valor de 'room' (si existe)
+  let param_room = urlParams.get('room');
+  if (param_room){
+    localStorage.setItem('room', param_room);
+  }
 }
 
 const cs = localStorage.getItem('session'); // conseguir código de sesión
@@ -80,10 +89,6 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       try {
-        generateQrInvitacion();             // Generar el código QR con la dirección IP (invitacion).
-      } catch (error) { ; }
-
-      try {
         connectMovil();                     // Enviar al PC que el móvil se ha conectado (inicio)
       } catch (error) { ; }
       
@@ -96,10 +101,22 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       try {
-        changeToSub();                      // Iniciar el escaner de QRs (escaneo-movil)
+        changeToSub();                      // Cambiar a la página de subtítulos (eleccion-subtitulos-movil)
       } catch (error) { ; }
-      }
-    else {
+
+      try {
+        initializeGestoCompartir();         // Detectar movimiento para pasar página (compartir-invitacion-movil)
+      } catch (error) { ; }
+
+      try {
+        getNewRoom();                       // Pedir y/o recibir sala para presentacion como ponente (compartir-invitacion(-movil))
+      } catch (error) { ; }
+
+      try {
+        joinRoom();                         // Entrar a sala para presentacion y recibir código como cliente (subtitulos/eleccion-subtitulos-movil)
+      } catch (error) { ; }
+
+    } else {
       // Si la conexión aún no está lista, esperar un poco y volver a comprobar
       setTimeout(verificar_socket, 100);  // Reintentar cada 100ms (porque si) hasta que la conexión esté lista
     }
