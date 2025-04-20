@@ -71,12 +71,12 @@ window.addEventListener("deviceorientation", function(event) {
         // Si ha pasado el tiempo, actualizamos el tiempo del último gesto
         ultimo_gesto = currentTime;
 
-        if (gamma > 30) { // Si el valor gamma es mayor a 30, interpretamos que se ha girado a la derecha
+        if (gamma > 15) { // Si el valor gamma es mayor a 30, interpretamos que se ha girado a la derecha
             const cs = localStorage.getItem('session'); // Obtener el código de sesión
             console.log("[DEBUG] Gesto detectado: pasar diapo a la derecha");
             socket.emit("pasar_diapo", { tipo: "giro-derecha", cs: cs });
         }
-        else if (gamma < -30) {  // Si gamma es menor a -30, se interpreta como un giro a la izquierda
+        else if (gamma < -15) {  // Si gamma es menor a -30, se interpreta como un giro a la izquierda
             const cs = localStorage.getItem('session'); // Obtener el código de sesión
             console.log("[DEBUG] Gesto detectado: pasar diapo a la izquierda");
             socket.emit("pasar_diapo", { tipo: "giro-izquierda", cs: cs });
