@@ -38,28 +38,41 @@ document.addEventListener("DOMContentLoaded", () => {                           
   
     recognition.onresult = function(event) {
 
-      var textoReconocido = event.results[0][0].transcript.trim();   // Extrae el texto reconocido
+      const textoReconocido = event.results[0][0].transcript.trim();   // Extrae el texto reconocido
       console.log("[DEBUG] Texto reconocido:", textoReconocido);     // Lo muestra en consola
       transcriptElement.textContent = textoReconocido;               // Muestra el texto en pantalla
     
-      var tiempoDeEspera = 1200;                                      // Variable para cuanto queremos esperar (1200 milisegundos)
-    
-      if (textoReconocido.toLowerCase() === "buenos días") {          // Comprobamos si el usuario dice "buenos días"
-        sessionStorage.setItem("selectedLanguage", "es");
-        setTimeout(function() {                                       // Si es "buenos días", esperamos y luego vamos a language-screen.html
-          window.location.href = "language-screen.html";
-        }, tiempoDeEspera);
-      } else if (textoReconocido === "good morning") {                // Comprobamos si el usuario dice "good morning"
-        sessionStorage.setItem("selectedLanguage", "en");             // Establecemos el idioma elegido como inglés
-        setTimeout(function() {                                       // Si es "good morning", esperamos y luego vamos a language-screen.html
-          window.location.href = "language-screen.html";  
-        }, tiempoDeEspera);
+      const tiempoDeEspera = 1200;                                      // Variable para cuanto queremos esperar (1200 ms)
+      const currentPage = window.location.pathname.split("/").pop();   // Página actual
+  
+      if (currentPage === "eleccion-subtitulos-movil.html") {
+        if (textoReconocido.toLowerCase() === "buenos días" || textoReconocido.toLowerCase() === "good morning") {
+          setTimeout(() => {
+            window.location.href = "subtitulos-elegidos-movil.html";
+          }, tiempoDeEspera);
+        } else {
+          setTimeout(() => {
+            window.location.href = "subtitulos-error-movil.html";
+          }, tiempoDeEspera);
+        }
       } else {
-        setTimeout(function() {                                       // Si es otra cosa, esperamos y luego vamos a error-screen.html
-          window.location.href = "error-screen.html";
-        }, tiempoDeEspera);
+        if (textoReconocido.toLowerCase() === "buenos días") {
+          sessionStorage.setItem("selectedLanguage", "es");
+          setTimeout(() => {
+            window.location.href = "language-screen.html";
+          }, tiempoDeEspera);
+        } else if (textoReconocido.toLowerCase() === "good morning") {
+          sessionStorage.setItem("selectedLanguage", "en");
+          setTimeout(() => {
+            window.location.href = "language-screen.html";
+          }, tiempoDeEspera);
+        } else {
+          setTimeout(() => {
+            window.location.href = "error-screen.html";
+          }, tiempoDeEspera);
+        }
       }
-    };    
+    }; 
   
     recognition.onend = () => {                                                  
       console.log("[DEBUG] Reconocimiento de voz finalizado.");                  
