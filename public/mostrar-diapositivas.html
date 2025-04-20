@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Didasko Subir Presentación</title>
-  <link rel="stylesheet" href="styles/subir-diapositivas.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizador de PDF</title>
+  <link rel="stylesheet" href="styles/mostrar-diapositivas.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
+  <div id="pdf-wrapper">
+    <div id="pdf-container">
+      <canvas id="pdf-canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="navigation">
+    <button id="prev-page">Anterior</button>
+    <button id="next-page">Siguiente</button>
+    <span>Página <span id="page-num">1</span> de <span id="page-count">0</span></span>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
-  <script src="script/modulo-socket.js"></script>
-  <script src="script/ponente_opciones.js"></script>
   <script src="script/script.js"></script>
+  <script src="script/mostrar-diapositivas.js"></script>
 </body>
 </html>

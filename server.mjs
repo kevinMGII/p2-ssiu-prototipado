@@ -4,6 +4,13 @@ import path from 'path';
 import express from 'express';
 import { Server } from 'socket.io';
 import * as os from 'os';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Obtener la ruta absoluta del archivo actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);  // Obtener el directorio donde se encuentra el archivo
+//console.log('[SOCKET.IO] __dirname:', __dirname);  // Verificar la ruta de __dirname
 
 const app = express();
 const PORT = 3000;
@@ -291,7 +298,34 @@ io.on('connection', (socket) => {
     });
   });
 
+    /* DAR RUTA DEL PDF DEL PONENTE */
+  socket.on('getPdfFile', (data) => {
+    console.log('[SOCKET.IO] Ruta recibida del cliente:', data.path);
+    const directoryPath = path.join(__dirname, 'public', data.path);  // Ruta de la carpeta 'uploads/cs'
+    console.log('[SOCKET.IO] Ruta del Directorio:', directoryPath);  // Imprimir la ruta de la carpeta en la consola
+    
+    // Leer los archivos del directorio
+    fs.readdir(directoryPath, (err, files) => {
+      if (err) {
+        console.log('Error al leer el directorio:', err);
+      }
 
+      // Filtrar archivos PDF (aunque siempre deberia haber uno)
+      const pdfFiles = files.filter(file => file.endsWith('.pdf'));
+
+      // Si se encuentra al menos un archivo PDF, sino hay un problema:
+      if (pdfFiles.length > 0) {
+        const firstPdf = pdfFiles[0];
+        const pdfFilePath = path.join(data.path, firstPdf);  // Generar la ruta relativa al archivo
+        console.log('[SOCKET.IO] Ruta del primer archivo PDF:', pdfFilePath);
+
+        // Emitir la ruta del primer archivo PDF
+        socket.emit('pdfFilePath', pdfFilePath);
+      } else {
+        socket.emit('pdfFilePath', { error: 'No se encontraron archivos PDF' });
+      }
+    });
+  });
 
   /* CREAR SALA */
   socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs}
