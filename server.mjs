@@ -327,6 +327,36 @@ io.on('connection', (socket) => {
     });
   });
 
+  /* SCROLL DE DIAPOSITIVAS */
+  socket.on('scroll_diapo', (data) => {
+    console.log('[SOCKET.IO] Scroll de diapositivas recibido:', data);
+    const cs = parseInt(data.cs);
+    const movilSock = sessions[cs]?.mobile_sock;
+    const pcSock = sessions[cs]?.pc_sock;
+    
+    if (movilSock && pcSock) {
+      console.log('[SOCKET.IO] Enviando scroll a PC correspondiente:', data.desliz);
+      io.to(pcSock).emit('scroll_pc', {desliz: data.desliz});
+    } else {
+      console.warn('[SOCKET.IO] No se encontraron sockets para la sesión', cs);
+    }
+  });
+
+  /* PASAR DIAPOSITIVA */
+  socket.on('pasar_diapo', (data) => {
+    console.log('[SOCKET.IO] Pasar diapositiva recibido:', data);
+    const cs = parseInt(data.cs);
+    const movilSock = sessions[cs]?.mobile_sock;
+    const pcSock = sessions[cs]?.pc_sock;
+    
+    if (movilSock && pcSock) {
+      console.log('[SOCKET.IO] Enviando pasar diapositiva a PC correspondiente:', data.tipo);
+      io.to(pcSock).emit('pasar_diapo_pc', {tipo: data.tipo});
+    } else {
+      console.warn('[SOCKET.IO] No se encontraron sockets para la sesión', cs);
+    }
+  });
+
   /* CREAR SALA */
   socket.on('new_room', (data) => {  // data = {duracion: tiempo (ms), ponente: cs}
     console.log('[SOCKET.IO] Creación de sala recibida: ', data);

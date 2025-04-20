@@ -50,19 +50,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Manejo del botón "Anterior"
+  const pdfContainer = document.getElementById('pdf-container'); // Contenedor del PDF
+  // Manejo del botón "Anterior" (por si acaso)
   document.getElementById('prev-page').addEventListener('click', () => {
     if (currentPage > 1) {
       currentPage--;
       renderPage(currentPage);
+      pdfContainer.scrollTop = 0; // Reiniciar el desplazamiento al inicio del contenedor
     }
   });
 
-  // Manejo del botón "Siguiente"
+  // Manejo del botón "Siguiente" (por si acaso)
   document.getElementById('next-page').addEventListener('click', () => {
     if (currentPage < totalPages) {
       currentPage++;
       renderPage(currentPage);
+      pdfContainer.scrollTop = 0; // Reiniciar el desplazamiento al inicio del contenedor
     }
   });
+
+  // Manejo del evento de pasar diapositivas (izquierda/derecha)
+
+  socket.on('pasar_diapo_pc', (data) => {
+    console.log('Cambio de diapositiva recibido:', data.tipo); // Verificar el tipo de cambio
+    if (data.tipo === "giro-derecha") {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPage(currentPage);
+        pdfContainer.scrollTop = 0; // Reiniciar el desplazamiento al inicio del contenedor
+      }
+    } else if (data.tipo === "giro-izquierda") {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPage(currentPage);
+        pdfContainer.scrollTop = 0; // Reiniciar el desplazamiento al inicio del contenedor
+      }
+    }
+  });
+
+  // Manejo del evento de desplazamiento (scroll) para el PDF
+  socket.on('scroll_pc', (data) => {
+    console.log('Deslizamiento recibido:', data.desliz); // Verificar el valor de desliz
+    const pdfContainer = document.getElementById('pdf-container'); // Contenedor del PDF
+    if (data.desliz === "arriba") {
+      pdfContainer.scrollBy(0, 150);  // Mueve el contenedor del PDF 200px hacia arriba
+    } else if (data.desliz === "abajo") {
+      pdfContainer.scrollBy(0, -150);   // Mueve el contenedor del PDF 200px hacia abajo
+    }
+  });
+
 });
+
