@@ -335,8 +335,16 @@ io.on('connection', (socket) => {
     const pcSock = sessions[cs]?.pc_sock;
     
     if (movilSock && pcSock) {
-      console.log('[SOCKET.IO] Enviando scroll a PC correspondiente:', data.desliz);
-      io.to(pcSock).emit('scroll_pc', {desliz: data.desliz});
+      console.log('[SOCKET.IO] Enviando a movil y PC:', data.desliz);
+      if (data.desliz == "izquierda") { // No seria cambiar diapositiva, sino cambiar HTML
+        console.log('[SOCKET.IO] Actualizando interfaz:', data.desliz);
+        io.to(movilSock).emit('actualizarInterfaz', 'ponente_opciones.html');
+        io.to(pcSock).emit('actualizarInterfaz', 'subir-diapositivas.html');
+      }
+      else {
+        console.log('[SOCKET.IO] Enviando scroll a PC correspondiente:', data.desliz);
+        io.to(pcSock).emit('scroll_pc', {desliz: data.desliz});
+      }
     } else {
       console.warn('[SOCKET.IO] No se encontraron sockets para la sesión', cs);
     }
