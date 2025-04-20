@@ -15,13 +15,22 @@ function initializeSocketIO() {
       var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
       if (gamma > 45 ) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha (y no esta en languaje)
           // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
-          const cs = localStorage.getItem('session'); // conseguir código de sesión
-          console.log("[DEBUG] Gesto detectado: girar a la derecha");
-          // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
-          socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
-          // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
+          if (gamma > 65 && (currentPath.indexOf("compartir-invitacion-movil.html") != -1)) {
+            const cs = localStorage.getItem('session'); // conseguir código de sesión
+            console.log("[DEBUG] Gesto detectado: girar a la derecha");
+            // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
+            socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
+            // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
+          }
+          else if (currentPath.indexOf("compartir-invitacion-movil.html") == -1) {
+            const cs = localStorage.getItem('session'); // conseguir código de sesión
+            console.log("[DEBUG] Gesto detectado: girar a la derecha");
+            // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
+            socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
+            // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
+          }
       }
-      else if (gamma < -45 && (currentPath.indexOf("language-screen.html") == -1)) {  // Si gamma es menor a -45, se interpreta como un giro a la izquierda
+      else if (gamma < -45 && (currentPath.indexOf("language-screen.html") == -1) && (currentPath.indexOf("compartir-invitacion-movil.html") == -1)) {  // Si gamma es menor a -45, se interpreta como un giro a la izquierda
         const cs = localStorage.getItem('session');  // Obtener el código de sesión
         console.log("[DEBUG] Gesto detectado: girar a la izquierda");
         socket.emit("gesto", { tipo: "giro-izquierda", url: currentPath, cs: cs, socket_des: socket.id });
@@ -34,7 +43,7 @@ function initializeSocketIO() {
   function initSocketForSpecialScreens() {                           // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
     var currentPath = window.location.pathname;                      // Obtenemos la ruta actual del documento.
     // Verificamos si la página es de lenguaje o el menú principal del móvil.
-    var isSpecialScreen = (currentPath.indexOf("language-screen.html") !== -1) || (currentPath.indexOf("menu_principal_movil.html")) !== -1 || (currentPath.indexOf("ponente_opciones.html") !== -1);
+    var isSpecialScreen = (currentPath.indexOf("language-screen.html") !== -1) || (currentPath.indexOf("menu_principal_movil.html")) !== -1 || (currentPath.indexOf("ponente_opciones.html") !== -1) || (currentPath.indexOf("compartir-invitacion-movil.html") !== -1);
     
     if (isSpecialScreen) {                                           // Si es una de esas páginas:
       initializeSocketIO();                                          // Llamamos a la función que inicializa Socket.IO.

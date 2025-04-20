@@ -28,6 +28,10 @@ const redirecciones = {
     "/duracion_sesion_movil.html": {
       "mobile": 'compartir-invitacion-movil.html',
       "pc": 'compartir-invitacion.html'
+    },
+    "/compartir-invitacion-movil.html": {
+      "mobile": 'ponente_opciones.html',
+      "pc": 'subir-diapositivas.html'
     }
   },
   'giro-izquierda': {
