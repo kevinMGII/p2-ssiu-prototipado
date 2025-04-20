@@ -421,6 +421,62 @@ io.on('connection', (socket) => {
     room_timeouts[parseInt(data)] = Date.now() + rooms[parseInt(data)]["duracion"];
   });
 
+  /* SCREEN RECORDING DEL PONENTE HACIA LOS ALUMNOS */
+
+  /* --- WebRTC: RECEPCIÓN DE OFFER DEL PONENTE --- */
+socket.on('webrtc-offer', ({ cs, offer }) => {
+  console.log(`[WebRTC] Oferta recibida del ponente para sesión ${cs}`);
+  
+  // Busco el ID de la sala del ponente
+  let room = null;
+  for (let roomID in rooms) {
+    if (rooms[roomID].ponente === cs) {
+      console.log(`[WebRTC] Sesión ${roomID} encontrada para el ponente ${cs}`);
+      room = roomID; // Guardar el ID de la sala
+    }
+    break;
+  }
+  console.log(`[WebRTC] Salas: ${rooms}`);
+  console.log(`[WebRTC] ID de sala encontrado: ${room}`);
+
+  // Una vez encontrado el ID de la sala, busco los sockets de los clientes conectados (y el ponente) y envio oferta
+  // Reenviar la oferta a cada cliente conectado
+  if (room !== null) {
+    rooms[room].clientes.forEach(cliente_cs => {
+      const clienteSock = sessions[cliente_cs]?.pc_sock;
+      if (clienteSock) {
+        io.to(sessions[cliente_cs].pc_sock).emit('webrtc-offer', {
+          offer,
+          from: sessions[cs].pc_sock, // Socket PC del ponente
+        });
+        console.log(`[WebRTC] Oferta reenviada al cliente ${cliente_cs}`);
+      }
+    });
+  }
+});
+
+/* --- WebRTC: RECEPCIÓN DE ANSWER DE CLIENTES --- */
+socket.on('webrtc-answer', ({ to, answer }) => {
+  if (to) {
+    io.to(to).emit('webrtc-answer', {
+      from: socket.id,
+      answer
+    });
+    console.log(`[WebRTC] Answer enviada al ponente de sesión ${to}`);
+  }
+});
+
+/* --- WebRTC: RECEPCIÓN DE ICE CANDIDATES DE CLIENTES --- */
+socket.on('webrtc-ice', ({ cs, candidate }) => {
+  const ponenteSock = sessions[cs]?.pc_sock;
+  if (ponenteSock) {
+    io.to(sessions[cs].pc_sock).emit('webrtc-ice', {
+      from: socket.id,
+      candidate
+    });
+    console.log(`[WebRTC] ICE reenviado al ponente de sesión ${cs}`);
+  }
+});
 
 
   /* ABANDONAR PÁGINA */

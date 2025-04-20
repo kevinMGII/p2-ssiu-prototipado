@@ -4,14 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visualización de Pantalla Compartida</title>
-  <link rel="stylesheet" href="screen-viewer.css">
+  <link rel="stylesheet" href="styles/screen_share_alumno.css">
 </head>
 <body>
   <div class="viewer-container">
     <h1>Pantalla del Ponente</h1>
-    <video id="screen-video" autoplay playsinline controls muted></video>
+    <div class="video-wrapper">
+      <video id="screen-video" playsinline muted></video>
+      <button id="play-button">Ver pantalla del ponente</button>
+    </div>
   </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script/script.js"></script>
+  <script src="script/share-screen-alumno.js"></script>
 </body>
-<script src="/socket.io/socket.io.js"></script>
-<script src="script/script.js"></script>
 </html>

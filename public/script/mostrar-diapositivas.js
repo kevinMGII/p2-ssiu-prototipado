@@ -105,3 +105,75 @@ socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualiz
   console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
   window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
 });
+
+
+
+/* ZONA DE SCREEN RECORDING */
+const cs_ponente = localStorage.getItem("session"); // ID de sesión
+
+const peerConnections = {}; // Si algún día quieres varios PC por cliente
+
+async function startScreenShare() {
+  const stream = await navigator.mediaDevices.getDisplayMedia({
+    video: true,
+    audio: true
+  });
+
+  const pc = new RTCPeerConnection({
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+  });
+
+  // Añadir todos los tracks (pantalla + audio)
+  stream.getTracks().forEach(track => pc.addTrack(track, stream));
+  console.log(stream.getTracks());
+
+  // Enviar ICE candidates al servidor
+  pc.onicecandidate = event => {
+    if (event.candidate) {
+      socket.emit("webrtc-ice", {
+        cs: cs_ponente,
+        candidate: event.candidate
+      });
+    }
+  };
+
+  // Crear offer
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+
+  // Enviar offer al servidor (este la reenviará a cada cliente)
+  socket.emit("webrtc-offer", {
+    cs: cs_ponente,
+    offer: offer
+  });
+
+  // Buffer para almacenar ICE candidates que llegan antes de setRemoteDescription()
+  const pendingCandidates = [];
+
+  // Recibir answer de los clientes
+  socket.on("webrtc-answer", ({ from, answer }) => {
+    console.log("[PONENTE] Recibida answer de", from);
+    pc.setRemoteDescription(new RTCSessionDescription(answer)).then(() => {
+      // Añadir candidatos acumulados
+      pendingCandidates.forEach(candidate => pc.addIceCandidate(candidate));
+      pendingCandidates.length = 0;
+    });
+  });
+
+  // Recibir ICE de los clientes
+  socket.on("webrtc-ice", ({ from, candidate }) => {
+    console.log("[PONENTE] Recibido ICE de", from);
+    const iceCandidate = new RTCIceCandidate(candidate);
+
+    // Si ya hay remoteDescription, añadimos directamente
+    if (pc.remoteDescription && pc.remoteDescription.type) {
+      pc.addIceCandidate(iceCandidate);
+    } else {
+      // Si no, almacenamos para más tarde
+      pendingCandidates.push(iceCandidate);
+    }
+  });
+}
+
+// Iniciar al cargar
+startScreenShare().catch(console.error);
