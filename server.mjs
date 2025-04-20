@@ -32,6 +32,10 @@ const redirecciones = {
     "/compartir-invitacion-movil.html": {
       "mobile": 'ponente_opciones.html',
       "pc": 'subir-diapositivas.html'
+    },
+    "/subtitulos-elegidos-movil.html": {
+      "mobile": 'screen_share_alumno.html',
+      "pc": 'mostrar-diapositivas.html'
     }
   },
   'giro-izquierda': {
