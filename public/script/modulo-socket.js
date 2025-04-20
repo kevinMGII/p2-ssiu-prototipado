@@ -43,7 +43,7 @@ function initializeSocketIO() {
   function initSocketForSpecialScreens() {                           // Actualmente se inicializará solo si la ruta actual es "language-screen.html" o "error-screen.html".
     var currentPath = window.location.pathname;                      // Obtenemos la ruta actual del documento.
     // Verificamos si la página es de lenguaje o el menú principal del móvil.
-    var isSpecialScreen = (currentPath.indexOf("language-screen.html") !== -1) || (currentPath.indexOf("menu_principal_movil.html")) !== -1 || (currentPath.indexOf("ponente_opciones.html") !== -1) || (currentPath.indexOf("compartir-invitacion-movil.html") !== -1);
+    var isSpecialScreen = (currentPath.indexOf("subtitulos-elegidos-movil.html") !== -1) || (currentPath.indexOf("language-screen.html") !== -1) || (currentPath.indexOf("menu_principal_movil.html")) !== -1 || (currentPath.indexOf("ponente_opciones.html") !== -1) || (currentPath.indexOf("compartir-invitacion-movil.html") !== -1);
     
     if (isSpecialScreen) {                                           // Si es una de esas páginas:
       initializeSocketIO();                                          // Llamamos a la función que inicializa Socket.IO.
