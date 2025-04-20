@@ -20,7 +20,7 @@ function initializeTouchEvents() {                             //  Inicializamos
     
     if (timeSinceLastTap > 0 && timeSinceLastTap < 300) {      // Si el intervalo entre toques es menor a 300 milisegundos, se considera un doble toque.
       console.log("[DEBUG] Double tap detectado (touchend). Redirigiendo según la página actual.");  // Imprimimos en la consola un mensaje de depuración.
-      if (currentPage === "subtitulos-elegidos-movil.html") {
+      if (currentPage === "subtitulos-elegidos-movil.html" || currentPage === "subtitulos-error-movil.html") {
         window.location.href = "eleccion-subtitulos-movil.html";  // Redirige a elección de subtítulos si venimos de la pantalla de subtítulos elegidos móvil
       } else {
         window.location.href = "movil.html";                  // Redirige a movil.html en cualquier otro caso
@@ -31,7 +31,7 @@ function initializeTouchEvents() {                             //  Inicializamos
   
   document.addEventListener("dblclick", function(e) {       // Metemos un listener para el evento "dblclick" (doble clic).
     console.log("[DEBUG] Doble clic detectado (dblclick). Redirigiendo según la página actual.");       // Imprimimos en la consola un mensaje de depuración.
-    if (currentPage === "subtitulos-elegidos-movil.html") {
+    if (currentPage === "subtitulos-elegidos-movil.html" || currentPage === "subtitulos-error-movil.html") {
       window.location.href = "eleccion-subtitulos-movil.html"; // Redirige a elección de subtítulos si venimos de la pantalla de subtítulos elegidos móvil
     } else {
       window.location.href = "movil.html";                   // Redirige a movil.html en cualquier otro caso
