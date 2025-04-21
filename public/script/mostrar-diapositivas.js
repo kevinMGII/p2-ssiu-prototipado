@@ -107,73 +107,35 @@ socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualiz
 });
 
 
+/* ZONA DONDE SE GUARDA LA VOZ DEL PONENTE */
+const recognition = new webkitSpeechRecognition();
 
-/* ZONA DE SCREEN RECORDING */
-const cs_ponente = localStorage.getItem("session"); // ID de sesión
+recognition.continuous = true;
+recognition.lang = 'es-ES';
+recognition.interimResult = false;
 
-const peerConnections = {}; // Si algún día quieres varios PC por cliente
+document.addEventListener('DOMContentLoaded', () => {
+  recognition.start();
+});
 
-async function startScreenShare() {
-  const stream = await navigator.mediaDevices.getDisplayMedia({
-    video: true,
-    audio: true
-  });
+window.addEventListener('beforeunload', function (event) {
+  recognition.abort();
+});
 
-  const pc = new RTCPeerConnection({
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
-  });
+// Reiniciar automáticamente cuando se detiene
+recognition.onend = () => {
+  console.warn("[RECOGNITION] Finalizado, reiniciando...");
+  recognition.start(); // Reinicia automáticamente
+};
 
-  // Añadir todos los tracks (pantalla + audio)
-  stream.getTracks().forEach(track => pc.addTrack(track, stream));
-  console.log(stream.getTracks());
+// Manejo de errores
+recognition.onerror = (event) => {
+  console.error("[RECOGNITION] Error:", event.error); // Por si acaso
+};
 
-  // Enviar ICE candidates al servidor
-  pc.onicecandidate = event => {
-    if (event.candidate) {
-      socket.emit("webrtc-ice", {
-        cs: cs_ponente,
-        candidate: event.candidate
-      });
-    }
-  };
-
-  // Crear offer
-  const offer = await pc.createOffer();
-  await pc.setLocalDescription(offer);
-
-  // Enviar offer al servidor (este la reenviará a cada cliente)
-  socket.emit("webrtc-offer", {
-    cs: cs_ponente,
-    offer: offer
-  });
-
-  // Buffer para almacenar ICE candidates que llegan antes de setRemoteDescription()
-  const pendingCandidates = [];
-
-  // Recibir answer de los clientes
-  socket.on("webrtc-answer", ({ from, answer }) => {
-    console.log("[PONENTE] Recibida answer de", from);
-    pc.setRemoteDescription(new RTCSessionDescription(answer)).then(() => {
-      // Añadir candidatos acumulados
-      pendingCandidates.forEach(candidate => pc.addIceCandidate(candidate));
-      pendingCandidates.length = 0;
-    });
-  });
-
-  // Recibir ICE de los clientes
-  socket.on("webrtc-ice", ({ from, candidate }) => {
-    console.log("[PONENTE] Recibido ICE de", from);
-    const iceCandidate = new RTCIceCandidate(candidate);
-
-    // Si ya hay remoteDescription, añadimos directamente
-    if (pc.remoteDescription && pc.remoteDescription.type) {
-      pc.addIceCandidate(iceCandidate);
-    } else {
-      // Si no, almacenamos para más tarde
-      pendingCandidates.push(iceCandidate);
-    }
-  });
+// Enviar por el socket a los "alumnos"
+recognition.onresult = (event) => {
+    const texto = event.results[event.results.length - 1][0].transcript;
+    console.log('[PONENTE]: ENVIO DE AUDIO');           // Verificar el texto reconocido
+    socket.emit("audio-chunk", {texto: texto, cs: cs}); // Enviar el texto al servidor
 }
-
-// Iniciar al cargar
-startScreenShare().catch(console.error);
