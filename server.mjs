@@ -556,6 +556,42 @@ io.on('connection', (socket) => {
 
 // |--------------------------- SOCKET.IO ---------------------------|
 
+// expiracion de salas
+setInterval(() => {
+  const now = Date.now();
+  room_timeouts.forEach((timeout, roomId) => {
+    // check para ver si ya se ha acabado el tiempo
+    if (timeout >= 0 && timeout <= now) {
+      console.log(`[SOCKET.IO] Sala ${roomId} expirada`);
+
+      // decirselo al profe
+      const sala = rooms[roomId];
+      if (sala) {
+        const presSock = sessions[sala.ponente]?.pc_sock;
+        if (presSock) {
+          io.to(presSock).emit('session-ended');
+        }
+        // decirselo a los alumnos
+        sala.clientes.forEach(clienteCS => {
+          const pcSock  = sessions[clienteCS]?.pc_sock;
+          const mobSock = sessions[clienteCS]?.mobile_sock;
+          if (pcSock){
+            io.to(pcSock).emit('session-ended');
+          }
+          if (mobSock){
+            io.to(mobSock).emit('session-ended');
+          } 
+        });
+      }
+
+
+      room_timeouts[roomId] = -1;
+      // delete rooms[roomId];
+    }
+  });
+}, 1000);  // cada segundo y no bloquea el event loop
+
+
 // Iniciar servidor HTTPS
 httpsServer.listen(PORT, () => {
   console.log(`Servidor escuchando en https://localhost:${PORT}`);
