@@ -46,7 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {                           
       const currentPage = window.location.pathname.split("/").pop();   // Página actual
   
       if (currentPage === "eleccion-subtitulos-movil.html") {
-        if (textoReconocido.toLowerCase() === "buenos días" || textoReconocido.toLowerCase() === "good morning") {
+        if (textoReconocido.toLowerCase() === "good morning") {
+          sessionStorage.setItem("selectedLanguage", "en");
+          setTimeout(() => {
+            window.location.href = "subtitulos-elegidos-movil.html";
+          }, tiempoDeEspera);
+        } else if (textoReconocido.toLowerCase() === "buenos días") {
+          sessionStorage.setItem("selectedLanguage", "es");
           setTimeout(() => {
             window.location.href = "subtitulos-elegidos-movil.html";
           }, tiempoDeEspera);
@@ -54,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {                           
           setTimeout(() => {
             window.location.href = "subtitulos-error-movil.html";
           }, tiempoDeEspera);
-        }
+        }        
       } else {
         if (textoReconocido.toLowerCase() === "buenos días") {
           sessionStorage.setItem("selectedLanguage", "es");
