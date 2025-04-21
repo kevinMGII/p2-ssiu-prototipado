@@ -327,8 +327,30 @@ io.on('connection', (socket) => {
         const pdfFilePath = path.join(data.path, firstPdf);  // Generar la ruta relativa al archivo
         console.log('[SOCKET.IO] Ruta del primer archivo PDF:', pdfFilePath);
 
-        // Emitir la ruta del primer archivo PDF
+        // Emitir la ruta del primer archivo PDF al Ponente
         socket.emit('pdfFilePath', pdfFilePath);
+
+        // Emitir la ruta del primer archivo PDF a todos los clientes de la sala
+        const cs = data.path.split('/')[1];  // Obtener el CS del path, que es el del ponente
+        let room = null;
+        for (let roomID in rooms) {
+          if (rooms[roomID].ponente === cs) {
+            console.log(`[SOCKET.IO] Sesión ${roomID} encontrada para el ponente ${cs}`);
+            room = roomID; // Guardar el ID de la sala, es decir, el numerito
+            break;
+          }
+        }
+        if (room !== null) {
+          rooms[room].clientes.forEach(clienteCS => {
+            try { // Por si un socket falla o algo por el estilo
+              let clienteSock = sessions[clienteCS]?.pc_sock;
+              if (clienteSock) {
+                io.to(clienteSock).emit('pdfFilePath', pdfFilePath); // reenviamos el pdf path a cada cliente de la sala
+                console.log(`[SOCKET.IO] ROOM ${room}. Enviado PDF a ${clienteCS} (${clienteSock})`);
+              }
+            } catch (error) { ; }
+           });
+        }
       } else {
         socket.emit('pdfFilePath', { error: 'No se encontraron archivos PDF' });
       }
@@ -350,8 +372,30 @@ io.on('connection', (socket) => {
         io.to(pcSock).emit('actualizarInterfaz', 'subir-diapositivas.html');
       }
       else {
+        // Enviamos a PC del Ponente
         console.log('[SOCKET.IO] Enviando scroll a PC correspondiente:', data.desliz);
         io.to(pcSock).emit('scroll_pc', {desliz: data.desliz});
+
+        // Emitir SCROLL A CADA CLIENTE
+        let room = null;
+        for (let roomID in rooms) {
+          if (rooms[roomID].ponente === cs.toString()) {
+            console.log(`[SOCKET.IO] Sesión ${roomID} encontrada para el ponente ${cs.toString()}`);
+            room = roomID; // Guardar el ID de la sala, es decir, el numerito
+            break;
+          }
+        }
+        if (room !== null) {
+          rooms[room].clientes.forEach(clienteCS => {
+            try { // Por si un socket falla o algo por el estilo
+              let clienteSock = sessions[clienteCS]?.pc_sock;
+              if (clienteSock) {
+                io.to(clienteSock).emit('scroll_pc', {desliz: data.desliz}); // reenviamos SCROLL a cada cliente
+                console.log(`[SOCKET.IO] ROOM ${room}. Scroll PC a ${clienteCS} (${clienteSock})`);
+              }
+            } catch (error) { ; }
+           });
+        }
       }
     } else {
       console.warn('[SOCKET.IO] No se encontraron sockets para la sesión', cs);
@@ -366,8 +410,30 @@ io.on('connection', (socket) => {
     const pcSock = sessions[cs]?.pc_sock;
     
     if (movilSock && pcSock) {
+      // ENVIAMOS PASO DIAPO AL PONENTE PC
       console.log('[SOCKET.IO] Enviando pasar diapositiva a PC correspondiente:', data.tipo);
       io.to(pcSock).emit('pasar_diapo_pc', {tipo: data.tipo});
+
+      // Emitir PASO DIAPO a todos los clientes de la sala
+      let room = null;
+      for (let roomID in rooms) {
+        if (rooms[roomID].ponente === cs.toString()) {
+          console.log(`[SOCKET.IO] Sesión ${roomID} encontrada para el ponente ${cs.toString()}`);
+          room = roomID; // Guardar el ID de la sala, es decir, el numerito
+          break;
+        }
+      }
+      if (room !== null) {
+        rooms[room].clientes.forEach(clienteCS => {
+          try { // Por si un socket falla o algo por el estilo
+            let clienteSock = sessions[clienteCS]?.pc_sock;
+            if (clienteSock) {
+              io.to(clienteSock).emit('pasar_diapo_pc', {tipo: data.tipo}); // reenviamos PASAR DIAPO a cada cliente
+              console.log(`[SOCKET.IO] ROOM ${room}. PASO DIAPO PC a ${clienteCS} (${clienteSock})`);
+            }
+          } catch (error) { ; }
+          });
+      }
     } else {
       console.warn('[SOCKET.IO] No se encontraron sockets para la sesión', cs);
     }

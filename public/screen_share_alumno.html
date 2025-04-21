@@ -5,14 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visualización de Pantalla Compartida</title>
   <link rel="stylesheet" href="styles/screen_share_alumno.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
-  <div class="viewer-container">
-    <h1>Pantalla del Ponente</h1>
-    <div class="video-wrapper">
-      <video id="screen-video" playsinline muted></video>
-      <button id="play-button">Ver pantalla del ponente</button>
+  <div id="pdf-wrapper">
+    <div id="pdf-container">
+      <canvas id="pdf-canvas"></canvas>
     </div>
+  </div>
+
+  <div class="navigation">
+    <button id="prev-page">Anterior</button>
+    <button id="next-page">Siguiente</button>
+    <span>Página <span id="page-num">1</span> de <span id="page-count">0</span></span>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
