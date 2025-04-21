@@ -109,7 +109,7 @@ socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualiz
 
 // alertamos
 socket.on('session-ended', () => {
-  alert('⏰ La sesión ha terminado');
+  alert('La sesión ha terminado');
 });
 // y redirigimos
 socket.on('session-ended', () => {
