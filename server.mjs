@@ -502,9 +502,15 @@ io.on('connection', (socket) => {
 
 
   /* INICIAR CONTADOR DE SALA */
-  socket.on('start_room', (data) => {  // data = room
+  socket.on('start_room', (data, callback) => {  // data = room
+    // se reserva el tiempo
     console.log('[SOCKET.IO] Inicio de sala recibido: ', data);
     room_timeouts[parseInt(data)] = Date.now() + rooms[parseInt(data)]["duracion"];
+
+    // se imprime y se devuelve
+    let date_timeout = new Date(Date.now() + rooms[parseInt(data)]["duracion"]);
+    console.log('[SOCKET.IO] Sala', data, 'disponible hasta:', date_timeout, "(", Date.now() + rooms[parseInt(data)]["duracion"], ")");
+    callback(date_timeout.toString());
   });
 
 

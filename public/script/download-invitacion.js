@@ -4,23 +4,6 @@
 // | - Descargar esa imagen                          |
 // |-------------------------------------------------|
 
-function initializeGestoCompartir() {
-  window.addEventListener("deviceorientation", function(event) { // Detecta cambios en la orientación del dispositivo.
-    var currentPath = window.location.pathname; // Examina la ruta actual del documento. Saber adonde redirigir en cada caso.
-    var gamma = event.gamma; // Extrae la inclinación lateral del dispositivo
-    if (gamma > 45 && continuar == true) { // Si el valor gamma es mayor a 45, interpretamos que se ha girado a la derecha
-        console.log("[DEBUG] Gesto detectado: girar a la derecha. Iniciando sala...");
-        socket.emit("start_room", localStorage.getItem("room"));
-        socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
-    }
-  });
-
-  socket.on("actualizarInterfaz", function(ruta) { // Escuchar el evento "actualizarInterfaz"
-      console.log("[DEBUG] Recibido actualizarInterfaz:", ruta);
-      window.location.href = ruta; // Redirige la página a la ruta recibida desde el servidor
-  });
-}
-
 function DownloadInvitation() {
     html2canvas(document.querySelector("#download-qr"))
         .then(canvas => {

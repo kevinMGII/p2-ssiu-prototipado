@@ -17,9 +17,14 @@ function initializeSocketIO() {
           // Obtengo el cs para saber que dispositivo es el que ha efectuado el gesto.
           if (gamma > 65 && (currentPath.indexOf("compartir-invitacion-movil.html") != -1)) {
             const cs = localStorage.getItem('session'); // conseguir código de sesión
-            console.log("[DEBUG] Gesto detectado: girar a la derecha");
+            console.log("[DEBUG] Gesto detectado: girar a la derecha. Iniciando sala...");
+            socket.emit("start_room", localStorage.getItem("room"), (response) => {
+              alert("Sala disponible hasta" + response);
+              setTimeout(() => {
+                socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });  
+              }, 1000);
+            });
             // Le mandamos el descriptor por si acaso quire comprobar el socket_id y saber que es él
-            socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });
             // Enviar el evento "giro-derecha" al servidor. Y URL para que sepa a donde redirigir. 
           }
           else if (currentPath.indexOf("compartir-invitacion-movil.html") == -1) {

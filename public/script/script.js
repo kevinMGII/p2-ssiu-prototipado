@@ -105,10 +105,6 @@ document.addEventListener("DOMContentLoaded", function() {
       } catch (error) { ; }
 
       try {
-        initializeGestoCompartir();         // Detectar movimiento para pasar página (compartir-invitacion-movil)
-      } catch (error) { ; }
-
-      try {
         getNewRoom();                       // Pedir y/o recibir sala para presentacion como ponente (compartir-invitacion(-movil))
       } catch (error) { ; }
 

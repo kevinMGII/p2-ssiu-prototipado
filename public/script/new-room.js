@@ -1,3 +1,8 @@
+// |-------------------------------------------------|
+// | Este módulo se encarga de:                      |
+// | - Conseguir sala para presentaciones            |
+// |-------------------------------------------------|
+
 function getNewRoom(){
     if (type == "mobile"){
         socket.emit('new_room', {duracion: localStorage.getItem('duracion'), ponente: cs, old_room: localStorage.getItem("room")});

@@ -6,6 +6,7 @@
 
 function joinRoom() {
     if (type === "pc") {
+        console.log("[DEBUG] Esperando a recibir código de sala...", Date.now());
         socket.on('join_room', (room) => {
             console.log("[DEBUG] Recibido código de sala:", room);
             localStorage.setItem('room', room);
@@ -13,7 +14,9 @@ function joinRoom() {
     }
     if (type === "mobile" && urlParams.get('room')) {
         console.log("[DEBUG] Recibido código de sala:", urlParams.get('room'));
-        console.log("[DEBUG] Enviando a PC...");
-        socket.emit('join_room', {room: urlParams.get('room'), cliente: cs});
+        setTimeout(() => {
+            console.log("[DEBUG] Enviando a PC...", Date.now());
+            socket.emit('join_room', {room: urlParams.get('room'), cliente: cs});
+        }, 1000);
     }
 }
