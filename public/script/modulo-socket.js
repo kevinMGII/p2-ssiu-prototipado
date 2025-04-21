@@ -19,7 +19,7 @@ function initializeSocketIO() {
             const cs = localStorage.getItem('session'); // conseguir código de sesión
             console.log("[DEBUG] Gesto detectado: girar a la derecha. Iniciando sala...");
             socket.emit("start_room", localStorage.getItem("room"), (response) => {
-              alert("Sala disponible hasta" + response);
+              alert("Sala disponible hasta: " + response);
               setTimeout(() => {
                 socket.emit("gesto", { tipo: "giro-derecha", url: currentPath, cs: cs, socket_des: socket.id });  
               }, 1000);
