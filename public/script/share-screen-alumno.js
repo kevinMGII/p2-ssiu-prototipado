@@ -134,3 +134,11 @@ function leerTexto(text) {
 
     window.speechSynthesis.speak(speech);
 }
+
+
+/* EVENTO QUE INDICA LA FINALIZACIÓN DE LA SESIÓN PARA EL CLIENTE (Se acaba el timeout) */
+
+socket.on("session-ended", () => {
+  alert('La sesión ha terminado');       // Alerta al usuario de que la sesión ha terminado
+  window.location.replace('index.html'); // Redirige a la página de inicio
+});
