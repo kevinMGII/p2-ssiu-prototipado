@@ -117,34 +117,56 @@ socket.on('session-ended', () => {
 });
 
 /* ZONA DONDE SE GUARDA LA VOZ DEL PONENTE */
-const recognition = new webkitSpeechRecognition();
 
-recognition.continuous = true;
-recognition.lang = 'es-ES';
-recognition.interimResult = false;
+socket.emit("ponente_language", {cs: cs}); // Preguntar al servidor el idioma del ponente
 
-document.addEventListener('DOMContentLoaded', () => {
-  recognition.start();
+socket.on("ponente_language_recibido", ({idioma}) => { // Recibir el idioma del ponente
+  let language = "es-ES"; // Idioma por defecto (español de España)
+  if (idioma == "es") { // Si el idioma es español (aunque algo innecesario de poner)
+    language = "es-ES"; // Cambiar a español de España
+  }
+  else if (idioma == "en") { // Si el idioma es inglés
+    language = "en-US"; // Cambiar a inglés de Estados Unidos
+  }
+  empezar_audio(language); // Llamar a la función para empezar a grabar audio
 });
 
-window.addEventListener('beforeunload', function (event) {
-  recognition.abort();
-});
+// Funcion para empezar a grabar audio, se activa cuando tengamos el idioma del ponente, es decir, el idioma que se va a enviar a los alumnos
+function empezar_audio(idioma) {
+  const recognition = new webkitSpeechRecognition();
 
-// Reiniciar automáticamente cuando se detiene
-recognition.onend = () => {
-  console.warn("[RECOGNITION] Finalizado, reiniciando...");
-  recognition.start(); // Reinicia automáticamente
-};
+  recognition.continuous = true;
+  recognition.lang = idioma;
+  recognition.interimResult = false;
 
-// Manejo de errores
-recognition.onerror = (event) => {
-  console.error("[RECOGNITION] Error:", event.error); // Por si acaso
-};
+  if (document.readyState === "loading") { // Por si no ha cargado el DOM
+    document.addEventListener("DOMContentLoaded", () => {
+      recognition.start();
+    });
+  } else { // Por si ha cargado el DOM ya
+    recognition.start(); // DOM ya está listo
+  }
 
-// Enviar por el socket a los "alumnos"
-recognition.onresult = (event) => {
-    const texto = event.results[event.results.length - 1][0].transcript;
-    console.log('[PONENTE]: ENVIO DE AUDIO');           // Verificar el texto reconocido
-    socket.emit("audio-chunk", {texto: texto, cs: cs}); // Enviar el texto al servidor
+  window.addEventListener('beforeunload', function (event) {
+    recognition.abort();
+  });
+
+  // Reiniciar automáticamente cuando se detiene
+  recognition.onend = () => {
+    console.warn("[RECOGNITION] Finalizado, reiniciando...");
+    recognition.start(); // Reinicia automáticamente
+  };
+
+  // Manejo de errores
+  recognition.onerror = (event) => {
+    console.error("[RECOGNITION] Error:", event.error); // Por si acaso
+  };
+
+  // Enviar por el socket a los "alumnos"
+  recognition.onresult = (event) => {
+      const texto = event.results[event.results.length - 1][0].transcript;
+      console.log('[PONENTE]: ENVIO DE AUDIO');           // Verificar el texto reconocido
+      socket.emit("audio-chunk", {texto: texto, cs: cs}); // Enviar el texto al servidor
+  }
+
 }

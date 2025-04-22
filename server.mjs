@@ -513,6 +513,21 @@ io.on('connection', (socket) => {
     callback(date_timeout.toString());
   });
 
+
+  /* SOCKET PARA PEDIR EL LENGUAJE DEL PONENTE (LO HACE EL PONENTE) */
+  socket.on("ponente_language", ({cs}) => { // Recibir el idioma del ponente
+    console.log(`[SOCKET.IO] Servidor sabe que el ponente ${cs} tiene idioma`);
+    // Enviar el idioma al ponente
+    const idioma = sessions[cs]?.language; // Idioma ponente
+    if (idioma) {
+      io.to(socket.id).emit("ponente_language_recibido", { idioma: idioma });
+      console.log(`[SOCKET.IO] Idioma ${idioma} enviado a ponente ${cs}`);
+    } else {
+      console.warn(`[SOCKET.IO] No se encontró el idioma para el ponente ${cs}`);
+    }
+  })
+
+
   /* SOCKET PARA GUARDAR EL LENGUAJE ESCOGIDO DEL USUARIO QUE LO ENVIA */
   socket.on("guardar_language", ({ idioma, cs }) => {
     console.log(`[SOCKET.IO] Idioma recibido para cliente ${cs}: ${idioma}`);
