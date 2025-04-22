@@ -513,6 +513,18 @@ io.on('connection', (socket) => {
     callback(date_timeout.toString());
   });
 
+  /* SOCKET PARA GUARDAR EL LENGUAJE ESCOGIDO DEL USUARIO QUE LO ENVIA */
+  socket.on("guardar_language", ({ idioma, cs }) => {
+    console.log(`[SOCKET.IO] Idioma recibido para cliente ${cs}: ${idioma}`);
+  
+    // Guardar el idioma en la sesión del cliente. Se crea el campo en la sesión si no existe
+    sessions[cs].language = idioma;
+    // Hago el write de nuevo, ya que estoy modificando el sessions.json
+    fs.writeFile('./data/sessions.json', JSON.stringify(sessions), () => {
+      console.log(`[SOCKET.IO] Idioma ${idioma} guardado para cliente ${cs}`);
+    });
+  });
+  
 
   /* ENVIAR VOZ y SUBTITULOS (TEXTO) DE PONENTE HACIA LOS CLIENTES */
   socket.on("audio-chunk", ({ texto, cs }) => {
@@ -529,14 +541,18 @@ io.on('connection', (socket) => {
       rooms[room].clientes.forEach(clienteCS => {
         // Parte Voz
         let clienteSock = sessions[clienteCS]?.pc_sock;
+        let audioDest = sessions[cs]?.language; // Idioma ponente
         if (clienteSock) {
-          io.to(clienteSock).emit("audio-chunk", { texto: texto, cs: cs }); // reenviamos el blob al cliente
+          io.to(clienteSock).emit("audio-chunk", { texto: texto, cs: cs, idioma_p: audioDest}); // reenviamos el blob al cliente
           console.log(`[MEDIA] ROOM ${room}. Enviado Audio a ${clienteCS} (${clienteSock})`);
         }
         // Parte Subtitulos
         let clientMovilSock = sessions[clienteCS]?.mobile_sock;
-        if (clientMovilSock) {
-          io.to(clientMovilSock).emit("subtitulos-chunk", { texto: texto, cs: cs }); // reenviamos el blob al cliente
+        // Saco lenguaje origen y destino
+        let idiomaOrigen = sessions[clienteCS]?.language; // Idioma alumno
+        let idiomaDestino = sessions[cs]?.language; // Idioma ponente
+        if (clientMovilSock && idiomaOrigen && idiomaDestino) { // Exista idiomas y socket movil
+          io.to(clientMovilSock).emit("subtitulos-chunk", { texto: texto, cs: cs, origin: idiomaOrigen, dest: idiomaDestino});
           console.log(`[MEDIA] ROOM ${room}. Enviado Subtitulos a ${clienteCS} (${clientMovilSock})`);
         }
       });

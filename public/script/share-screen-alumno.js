@@ -118,19 +118,25 @@
 
 /* ZONA DE REPRODUCCIÓN DE AUDIO DEL PONENTE */
 
-socket.on("audio-chunk", ( { texto, cs }) => {
+socket.on("audio-chunk", ( { texto, cs, idioma_p }) => {
   console.log("Texto recibido:", texto); // Verificar el texto recibido
   console.log("CS Ponente recibido:", cs); // Verificar el CS recibido
-  leerTexto(texto); // Leer el texto recibido
+  if (idioma_p == "es") { // Si el idioma es español, reproducir el texto en español
+    leerTexto(texto, "es-ES"); // Leer el texto recibido en español
+  }
+  else {
+    leerTexto(texto, "en-US"); // Leer el texto recibido en ingles
+  }
+  
 });
 
 
-function leerTexto(text) {
+function leerTexto(text, idioma) {
     const speech = new SpeechSynthesisUtterance(text);
     speech.volume = 1;
-    speech.rate = 0.5;
-    speech.pitch = 0.4;
-    speech.lang = 'es-ES'
+    speech.rate = 1;
+    speech.pitch = 1;
+    speech.lang = idioma;
 
     window.speechSynthesis.speak(speech);
 }

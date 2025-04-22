@@ -6,6 +6,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {                              // Esperamos a que el contenido del DOM esté completamente cargado
   var lang = sessionStorage.getItem("selectedLanguage") || "es";                        // Obtenemos el idioma guardado en sessionStorage (si no hay nada, usamos "es" por defecto)
+  socket.emit("guardar_language", {idioma: lang, cs: cs});                              // Enviar el idioma ponente al servidor, da igual que se repita, se guardara de nuevo
 
   var utterText, utterLang, flagSrc, langName, titleText, continueText, repeatText;     // Declaramos las variables que vamos a usar para el contenido dinámico
   if (lang === "en") {                                                                  // Si el idioma es inglés, cargamos textos e imágenes en inglés
