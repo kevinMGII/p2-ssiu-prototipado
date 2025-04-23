@@ -1,9 +1,10 @@
-# p2-ssiu-prototipado
-Fase 2: Sistemas Interactivos y Ubicuos. 
+# Miembros del grupo
 
-Prototipado e implementación del asistente de reuniones.
+Antonio de Mariano Pérez - 100495740@alumnos.uc3m.es
+Alejandro Castro Orrillo - 100495795@alumnos.uc3m.es
+Kevin Medina García - 100495893@alumnos.uc3m.es
 
- -------------------------------------------------------
+# Instrucciones
 
  Para lanzar el servidor a múltiples dispositivos:
  
@@ -20,5 +21,5 @@ Prototipado e implementación del asistente de reuniones.
    5. https://IP_LOCAL:3000     # Desde otro dispositivo en la misma red, acceder al servidor usando la IP obtenida
 
 
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+Certificados realizados con: openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
 
