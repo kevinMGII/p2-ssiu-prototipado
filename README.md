@@ -25,3 +25,6 @@ Kevin Medina García - 100495893@alumnos.uc3m.es
 
 Certificados realizados con: openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
 
+# Vídeos
+
+Los videos han sido subidos a Youtube en oculto, con los enlaces a ellos en el ANEXO I. de la memoria.
